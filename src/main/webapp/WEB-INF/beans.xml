@@ -14,10 +14,10 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<!-- Plain HTML page that kicks us into the app -->
-
-<html>
-<head>
-<meta http-equiv="Refresh" content="0; URL=HelloWorld">
-</head>
-</html>
+<!-- Marker file indicating CDI should be enabled -->
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+      http://java.sun.com/xml/ns/javaee 
+      http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
+</beans>
