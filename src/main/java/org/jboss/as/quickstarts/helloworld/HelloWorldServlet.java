@@ -16,6 +16,7 @@
  */
 package org.jboss.as.quickstarts.helloworld;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -25,6 +26,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
 
 /**
  * <p>
@@ -58,6 +62,19 @@ public class HelloWorldServlet extends HttpServlet {
         writer.println("<h1>" + helloService.createHelloMessage("World") + "</h1>");
         writer.println(PAGE_FOOTER);
         writer.close();
+        PDDocument document;
+		try {
+			PDFTextStripper stripper;
+			document = PDDocument.load(new File("war\\norwegiantext.pdf"));
+			stripper = new PDFTextStripper();
+			stripper.setSortByPosition( true );
+			String textstrip = stripper.getText(document);
+			System.out.println(stripper.getText(document));
+			//writer.println(textstrip);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }
