@@ -65,12 +65,12 @@ public class HelloWorldServlet extends HttpServlet {
         PDDocument document;
 		try {
 			PDFTextStripper stripper;
-			document = PDDocument.load(new File("war\\norwegiantext.pdf"));
+			document = PDDocument.load(new File("src\\main\\webapp\\firstbustimetable.pdf"));
 			stripper = new PDFTextStripper();
 			stripper.setSortByPosition( true );
 			String textstrip = stripper.getText(document);
 			System.out.println(stripper.getText(document));
-			//writer.println(textstrip);
+			writer.println(textstrip);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -13,7 +13,7 @@ public class PDFextractTest {
 		PDDocument document;
 		try {
 			PDFTextStripper stripper;
-			document = PDDocument.load(new File("war\\norwegiantext.pdf"));
+			document = PDDocument.load(new File("src\\main\\webapp\\firstbustimetable.pdf"));
 			stripper = new PDFTextStripper();
 			stripper.setSortByPosition( true );
 			System.out.println(stripper.getText(document));
