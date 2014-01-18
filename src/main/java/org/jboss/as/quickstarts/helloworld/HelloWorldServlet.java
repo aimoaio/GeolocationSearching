@@ -62,19 +62,7 @@ public class HelloWorldServlet extends HttpServlet {
         writer.println("<h1>" + helloService.createHelloMessage("World") + "</h1>");
         writer.println(PAGE_FOOTER);
         writer.close();
-        PDDocument document;
-		try {
-			PDFTextStripper stripper;
-			document = PDDocument.load(new File("war\\norwegiantext.pdf"));
-			stripper = new PDFTextStripper();
-			stripper.setSortByPosition( true );
-			String textstrip = stripper.getText(document);
-			System.out.println(stripper.getText(document));
-			writer.println(textstrip);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+       
 		
     }
 
