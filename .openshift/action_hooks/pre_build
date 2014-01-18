@@ -1,0 +1,7 @@
+#!/bin/bash
+# This is a simple script and will be executed on your CI system if 
+# available.  Otherwise it will execute while your application is stopped
+# before the build step.  This script gets executed directly, so it
+# could be python, php, ruby, etc.
+
+mvn install:install-file -Dfile=../../app-root/repo/pdfbox-app-1.8.3 -DgroupId=org.apache.pdfbox -DartifactId=pdfbox -Dversion=1.8.3 -Dpackaging=jar
