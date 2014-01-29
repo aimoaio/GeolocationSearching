@@ -1,4 +1,0 @@
-geolocationproject
-==================
-
-Maven/Openshift version
