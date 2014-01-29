@@ -60,12 +60,13 @@ public class HelloWorldServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         writer.println(PAGE_HEADER);
         writer.println("<h1>" + helloService.createHelloMessage("World") + "</h1>");
+        writer.println("IS IT WORKING?");
         writer.println(PAGE_FOOTER);
         
         PDDocument document;
 		try {
 			PDFTextStripper stripper;
-			document = PDDocument.load(new File("src\\main\\webapp\\firstbustimetable.pdf"));
+			document = PDDocument.load(new File("firstbustimetable.pdf"));
 			stripper = new PDFTextStripper();
 			stripper.setSortByPosition( true );
 			String textstrip = stripper.getText(document);
