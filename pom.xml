@@ -110,8 +110,9 @@
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>1.8.3</version>
-			</dependency>
-
+		</dependency>
+		
+		
     </dependencies>
 
     <build>

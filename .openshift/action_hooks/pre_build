@@ -4,4 +4,5 @@
 # before the build step.  This script gets executed directly, so it
 # could be python, php, ruby, etc.
 
-mvn install:install-file -Dfile=../../app-root/repo/pdfbox-app-1.8.3 -DgroupId=org.apache.pdfbox -DartifactId=pdfbox -Dversion=1.8.3 -Dpackaging=jar
+mvn install:install-file -Dfile=../../app-root/repo/pdfbox-app-1.8.3.jar -DgroupId=org.apache.pdfbox -DartifactId=pdfbox -Dversion=1.8.3 -Dpackaging=jar
+mvn install:install-file -Dfile=../../app-root/repo/FhtinoPdfBox-1.0.0.jar -DgroupId=it.fhtino.pdfbox.alt -DartifactId=fhpdfbox -Dversion=1.0.0 -Dpackaging=jar

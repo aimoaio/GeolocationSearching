@@ -2,19 +2,21 @@ package org.jboss.as.quickstarts.helloworld;
 
 
 
-import it.fhtino.pdfbox.alt.Rectangle;
 
+
+import java.awt.geom.Rectangle2D;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.pdfbox.io.RandomAccessBuffer;
-import org.pdfbox.pdmodel.PDDocument;
-import org.pdfbox.pdmodel.PDDocumentCatalog;
-import org.pdfbox.pdmodel.PDPage;
-import org.pdfbox.util.PDFTextStripperByAreaGAE;
+import org.apache.pdfbox.io.RandomAccessBuffer;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.util.PDFTextStripperByArea;
+
 
 public class PdfBoxGAEDemo {
 
@@ -44,10 +46,10 @@ public class PdfBoxGAEDemo {
 				PDDocument doc = PDDocument.load(connection.getInputStream(), tempMemBuffer);
 				System.out.println("line1");
 
-				PDFTextStripperByAreaGAE sa = new PDFTextStripperByAreaGAE();
+				PDFTextStripperByArea sa = new PDFTextStripperByArea();
 	
 				System.out.println("line 1.1");
-				sa.addRegion("Area1", new Rectangle(x, y, w, h));
+				sa.addRegion("Area1", new Rectangle2D.Double(x, y, w, h));
 				System.out.println("line 1.2");
 				//PDPage p = (PDPage) doc.getDocumentCatalog().getAllPages().get(0); //this line is the problem
 				PDDocumentCatalog cat = doc.getDocumentCatalog();
