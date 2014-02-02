@@ -4,3 +4,12 @@ h1
 {
 color:red;
 }
+
+@media screen and (max-device-width: 640px) {
+  html, body, #map {
+        width: 300px;
+        margin: 2px;
+        padding: 1px
+      }  
+      
+  }
