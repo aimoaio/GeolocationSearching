@@ -12,6 +12,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Geolocation and Google Maps API</title>
+	<link rel="stylesheet" type="text/css" href="main.css">	
     <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script>
       function writeAddressName(latLng) {
