@@ -107,12 +107,7 @@
  
       window.onload = geolocateUser;
     </script>
-    <style type="text/css">
-      #map {
-        width: 500px;
-        height: 500px;
-      }
-    </style>
+    
   </head>
   <body>
     <h1>Geolocation basic example</h1>
@@ -142,7 +137,7 @@
 	if (y == null)
 		y = "0";
 	if (w == null)
-		w = "500";
+		w = "800";
 	if (h == null)
 		h = "800";
 

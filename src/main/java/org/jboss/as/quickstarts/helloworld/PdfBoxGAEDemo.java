@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import org.apache.pdfbox.io.RandomAccessBuffer;
@@ -23,6 +24,7 @@ public class PdfBoxGAEDemo {
 	private static final Logger log = Logger.getLogger(PdfBoxGAEDemo.class.getName());
 	
 	static ArrayList<String> text;
+	static ArrayList<String> tokens;
 	static String s;
 
 	public static ArrayList<String> Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
@@ -30,6 +32,7 @@ public class PdfBoxGAEDemo {
 		log.info("PdfUrl=" + pdfUrl);
 		System.out.println("didnt get into try");
 		text = new ArrayList<String>();
+		tokens = new ArrayList<String>();
 		ArrayList<String> searchterms = terms;
 	
 		try {
@@ -78,12 +81,25 @@ public class PdfBoxGAEDemo {
 						}
 				}
 				
+				//now we have text, need to split into lines. tokenize the whole string input first
+				String str = text.get(0);
+
+				System.out.println("---- Split by comma ',' ------");
+				StringTokenizer st = new StringTokenizer(str, "\n");
+		 
+				while (st.hasMoreElements()) {
+					System.out.println(st.nextElement());
+					tokens.add(st.nextToken());
+				}
+				
+				tokens.add("It did work right?");
+				
 				//System.out.println("line 1.5");
 				//System.out.println("line2");
 				//text = sa.getTextForRegion("Area1");
-				//System.out.println(text);
+				System.out.println(text);
 				doc.close();
-				return text;
+				return tokens;
 				
 
 			} else{
