@@ -4,12 +4,15 @@ package org.jboss.as.quickstarts.helloworld;
 
 
 
+
+
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import org.apache.pdfbox.io.RandomAccessBuffer;
@@ -22,18 +25,27 @@ import org.apache.pdfbox.util.PDFTextStripperByArea;
 public class PdfBoxGAEDemo {
 
 	private static final Logger log = Logger.getLogger(PdfBoxGAEDemo.class.getName());
+	public static final String NEW_LINE = System.getProperty("line.separator");
+	
 	
 	static ArrayList<String> text;
-	static ArrayList<String> tokens;
+	static String finaltext;
 	static String s;
+	static int linecounter;
+	static ArrayList<String> tokens;
+	static ArrayList<String> cells;
+	static ArrayList<String> HTML;
 
-	public static ArrayList<String> Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
+	public static String Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
 
 		log.info("PdfUrl=" + pdfUrl);
 		System.out.println("didnt get into try");
 		text = new ArrayList<String>();
 		tokens = new ArrayList<String>();
+		cells = new ArrayList<String>();
+		HTML = new ArrayList<String>();
 		ArrayList<String> searchterms = terms;
+		linecounter =0;
 	
 		try {
 			URL urlObj = new URL(pdfUrl);
@@ -63,43 +75,69 @@ public class PdfBoxGAEDemo {
 				System.out.println("line 1.4");
 				
 				//loop for pages
-				for (int i=0;i<4; i++){
+				for (int i=0;i<2; i++){
 					PDPage p = pages.get(i);
 					sa.extractRegions(p);
+					
+					//s is a string of the PAGE
 					s = sa.getTextForRegion("Area1"); //get the text for the page
 					
 					if(searchterms.size()!=0){
 						
 						for(int j=0;j<searchterms.size();j++){
 						String replace = searchterms.get(j);
-						System.out.println("Terms: " + replace);
+						//System.out.println("Terms: " + replace);
 						String newterm = "<span style='background-color:yellow;'>" + replace + "</span>";
 						s = s.replace(replace, newterm);
 						
 						}
-						text.add(s);
+						
+						linecounter = countLines(s);
+						System.out.println("Line counter at: " + linecounter);
+						
+						//adding tr to all new lines
+						tokens = splitStrings(s); //split by line
+						for(String tk:tokens){
+						
+							//for every row TK, append relevant tags
+							StringBuilder sb = new StringBuilder();
+							sb.append("<tr>");
+							sb.append("<td>");
+							sb.append(tk);
+							sb.append("</td>");
+							sb.append("</tr>");
+							System.out.println(sb.toString());
+							
+							String row = sb.toString(); //row of text with tags
+							HTML.add(row); //add row of text with tags
 						}
+						
+						
+						
+						}
+					
+					
+					
 				}
 				
-				//now we have text, need to split into lines. tokenize the whole string input first
-				String str = text.get(0);
-
-				System.out.println("---- Split by comma ',' ------");
-				StringTokenizer st = new StringTokenizer(str, "\n");
-		 
-				while (st.hasMoreElements()) {
-					System.out.println(st.nextElement());
-					tokens.add(st.nextToken());
+				//text per page
+				text.add("<table>");
+				StringBuilder stringer = new StringBuilder();
+				for(String t:HTML){
+					stringer.append(t);
 				}
+				text.add(stringer.toString());
+				text.add("</table>");
+				text.add("<br/>");
+				System.out.println("T: " + text.toString());
+				StringBuilder stringbuild = new StringBuilder();
+				for(String t:text){
+					stringbuild.append(t);
+				}
+				finaltext = stringbuild.toString();
 				
-				tokens.add("It did work right?");
-				
-				//System.out.println("line 1.5");
-				//System.out.println("line2");
-				//text = sa.getTextForRegion("Area1");
-				System.out.println(text);
 				doc.close();
-				return tokens;
+				return finaltext;
 				
 
 			} else{
@@ -112,6 +150,26 @@ public class PdfBoxGAEDemo {
 			log.severe("EXCEPTION: " + e.toString());
 			//return "*** EXCEPTION *** " + e.toString();
 		}
-		return tokens;
+		return finaltext;
+	}
+	
+	private static int countLines(String str){
+		   String[] lines = str.split("\r\n|\r|\n");
+		   return  lines.length;
+		}
+	
+	private static ArrayList<String> splitStrings(String str){
+		ArrayList<String> split = new ArrayList<String>();
+		String[] lines = str.split("\r\n|\r|\n");
+		Collections.addAll(split, lines); 
+		
+		return split;
+	}
+	
+	private static ArrayList<String> splitStringSpace(String str){
+		ArrayList<String> split = new ArrayList<String>();
+		String[] splited = str.split("\\s+");
+		Collections.addAll(split, splited); 
+		return split;
 	}
 }

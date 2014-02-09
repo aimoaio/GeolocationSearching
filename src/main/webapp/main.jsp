@@ -137,7 +137,7 @@
 	if (y == null)
 		y = "0";
 	if (w == null)
-		w = "800";
+		w = "500";
 	if (h == null)
 		h = "800";
 
@@ -179,8 +179,8 @@
 			geoterms.add(term3);
 			geoterms.add(term4);
 			geoterms.add(term5);
-			ArrayList<String> pdfText = org.jboss.as.quickstarts.helloworld.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
-			pdfText.toString();
+			String pdfText = org.jboss.as.quickstarts.helloworld.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+		
 
 			Date endDate = new Date();
 			double deltaSeconds = (endDate.getTime() - startDate.getTime()) / 1000.0;
