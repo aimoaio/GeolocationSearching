@@ -112,6 +112,6 @@ public class PdfBoxGAEDemo {
 			log.severe("EXCEPTION: " + e.toString());
 			//return "*** EXCEPTION *** " + e.toString();
 		}
-		return text;
+		return tokens;
 	}
 }
