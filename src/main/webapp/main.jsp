@@ -168,22 +168,22 @@
 	if (request.getParameter("btnSumbit") != null) {
 		if (captchaError.equals("")) {
 
-			Date startDate = new Date();
-			int xx = Integer.parseInt(x);
-			int yy = Integer.parseInt(y);
-			int ww = Integer.parseInt(w);
-			int hh = Integer.parseInt(h);
-			ArrayList<String> geoterms = new ArrayList<String>();
-			geoterms.add(term);
-			geoterms.add(term2);
-			geoterms.add(term3);
-			geoterms.add(term4);
-			geoterms.add(term5);
-			String pdfText = org.jboss.as.quickstarts.helloworld.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+	Date startDate = new Date();
+	int xx = Integer.parseInt(x);
+	int yy = Integer.parseInt(y);
+	int ww = Integer.parseInt(w);
+	int hh = Integer.parseInt(h);
+	ArrayList<String> geoterms = new ArrayList<String>();
+	geoterms.add(term);
+	geoterms.add(term2);
+	geoterms.add(term3);
+	geoterms.add(term4);
+	geoterms.add(term5);
+	String pdfText = org.jboss.as.quickstarts.helloworld.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
 		
 
-			Date endDate = new Date();
-			double deltaSeconds = (endDate.getTime() - startDate.getTime()) / 1000.0;
+	Date endDate = new Date();
+	double deltaSeconds = (endDate.getTime() - startDate.getTime()) / 1000.0;
 %><br />
 <br />
 Time (Http GET + text extraction):

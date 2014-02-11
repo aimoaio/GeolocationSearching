@@ -6,8 +6,6 @@ package org.jboss.as.quickstarts.helloworld;
 
 
 
-
-
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.net.HttpURLConnection;
@@ -37,8 +35,7 @@ public class PdfBoxGAEDemo {
 	static ArrayList<String> tokens;
 	static ArrayList<String> cells;
 	static ArrayList<String> HTML;
-	static ArrayList<String> HTMLFINAL;
-	
+
 	public static String Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
 
 		log.info("PdfUrl=" + pdfUrl);
@@ -47,8 +44,6 @@ public class PdfBoxGAEDemo {
 		tokens = new ArrayList<String>();
 		cells = new ArrayList<String>();
 		HTML = new ArrayList<String>();
-		HTMLFINAL = new ArrayList<String>();
-		
 		ArrayList<String> searchterms = terms;
 		linecounter =0;
 	
@@ -96,7 +91,6 @@ public class PdfBoxGAEDemo {
 						s = s.replace(replace, newterm);
 						
 						}
-					}
 						
 						linecounter = countLines(s);
 						System.out.println("Line counter at: " + linecounter);
@@ -108,7 +102,9 @@ public class PdfBoxGAEDemo {
 							//for every row TK, append relevant tags
 							StringBuilder sb = new StringBuilder();
 							sb.append("<tr>");
+							sb.append("<td>");
 							sb.append(tk);
+							sb.append("</td>");
 							sb.append("</tr>");
 							System.out.println(sb.toString());
 							
@@ -116,70 +112,18 @@ public class PdfBoxGAEDemo {
 							HTML.add(row); //add row of text with tags
 						}
 						
-						//take formatted rows and check for table cell information
-						for(String row: HTML){
-							
-							//check to see if row contains any number, else skip cell adding
-							if(containsDigit(row)){
-								
-								//if there is number data, find first occurrence of numbers
-								
-								//first split row into cells
-								cells = splitStringSpace(row);
-								int position = firstPositionOfNumbers(cells); //find first pos of numbers in row
-								System.out.println("position: " + position);
-								
-								ArrayList<String> extras = new ArrayList<String>();
-								
-								
-								//now we add table data
-								for(int w1=0;w1<cells.size();w1++){ //loop through all cells
-									
-									
-									//if cell is lower than position
-									if(w1<position){
-										extras.add(cells.get(w1)); //add to be appended separately
-									} else {
-									
-									StringBuilder builder = new StringBuilder();
-									builder.append("<td>");
-									builder.append(cells.get(w1));
-									builder.append("</td>");
-									
-									//build our new row data string
-									String newrowdata = builder.toString();
-									
-									//add it to a list
-									HTMLFINAL.add(newrowdata);
-									}
-									
-									//append the extras together
-									StringBuilder b = new StringBuilder();
-									for(String extra: extras){
-										b.append(extra);
-									}
-									
-									b.insert(0, "<td>");
-									b.append("</td>");
-									
-									//new string
-									String newrow = b.toString();
-									
-									//add new string to start of HTML list
-									HTMLFINAL.add(0, newrow);
-								}
-								
-							} else {
-								System.out.println("No numbers in row detected.");
-							}
-						}
 						
+						
+						}
+					
+					
+					
 				}
 				
 				//text per page
 				text.add("<table>");
 				StringBuilder stringer = new StringBuilder();
-				for(String t:HTMLFINAL){
+				for(String t:HTML){
 					stringer.append(t);
 				}
 				text.add(stringer.toString());
@@ -192,7 +136,8 @@ public class PdfBoxGAEDemo {
 				}
 				finaltext = stringbuild.toString();
 				
-				//doc.close();
+				doc.close();
+				return finaltext;
 				
 
 			} else{
@@ -227,30 +172,4 @@ public class PdfBoxGAEDemo {
 		Collections.addAll(split, splited); 
 		return split;
 	}
-	
-	public final static boolean containsDigit(String s) {
-	    boolean containsDigit = false;
-
-	    if (s != null && !s.isEmpty()) {
-	        for (char c : s.toCharArray()) {
-	            if (containsDigit = Character.isDigit(c)) {
-	                break;
-	            }
-	        }
-	    }
-
-	    return containsDigit;
-	}
-		
-		private static int firstPositionOfNumbers(ArrayList<String> s){
-			int position = 0;
-			for(int i=0;i<s.size();i++){
-				if(containsDigit(s.get(i))){
-					position = i;
-					break;
-				}
-			} return position;
-
-		}
-
 }
