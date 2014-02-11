@@ -200,13 +200,25 @@ Extracted text:
 <a href="#<%=term5%>"><%=term5%></a> <br/>
 <div style="background: #e0e0e0;"><pre><%=pdfText%></pre></div>
 
+
+<br />
+<br />
+Extracted text v2:
+<table>
+	<tr>
+		<td><%=term%></td>
+		<td>Stuff2</td>
+	</tr>
+	<tr>
+		<td>2Stuff</td>
+		<td>2Stuff2</td>
+	</tr>
+</table>
 <%
 	}
 	}
 %>
 
-<br />
-<br />
 <a href="http://code.google.com/appengine/" target="_blank"> <img
 	src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
 	alt="Powered by Google App Engine" border="0" /> </a>
