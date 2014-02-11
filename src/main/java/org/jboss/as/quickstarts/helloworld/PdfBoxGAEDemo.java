@@ -87,7 +87,8 @@ public class PdfBoxGAEDemo {
 						for(int j=0;j<searchterms.size();j++){
 						String replace = searchterms.get(j);
 						//System.out.println("Terms: " + replace);
-						String newterm = "<span style='background-color:yellow;'>" + replace + "</span>";
+						String newterm = "<span id=\""+replace+"\" style='background-color:yellow;'>" + replace + "</span>";
+						System.out.println("new line is: " + newterm);
 						s = s.replace(replace, newterm);
 						
 						}
