@@ -6,6 +6,9 @@ package org.jboss.as.quickstarts.helloworld;
 
 
 
+
+
+
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.net.HttpURLConnection;
@@ -35,7 +38,8 @@ public class PdfBoxGAEDemo {
 	static ArrayList<String> tokens;
 	static ArrayList<String> cells;
 	static ArrayList<String> HTML;
-
+	static ArrayList<String> colours;
+	
 	public static String Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
 
 		log.info("PdfUrl=" + pdfUrl);
@@ -44,6 +48,16 @@ public class PdfBoxGAEDemo {
 		tokens = new ArrayList<String>();
 		cells = new ArrayList<String>();
 		HTML = new ArrayList<String>();
+		colours = new ArrayList<String>();
+		
+		//add colours
+		colours.add("blue");
+		colours.add("purple");
+		colours.add("green");
+		colours.add("yellow");
+		colours.add("pink");
+		colours.add("red");
+		
 		ArrayList<String> searchterms = terms;
 		linecounter =0;
 	
@@ -87,11 +101,13 @@ public class PdfBoxGAEDemo {
 						for(int j=0;j<searchterms.size();j++){
 						String replace = searchterms.get(j);
 						//System.out.println("Terms: " + replace);
-						String newterm = "<span id=\""+replace+"\" style='background-color:yellow;'>" + replace + "</span>";
+						String colour = colours.get(j);
+						String newterm = "<span id=\""+replace+"\" style='background-color:"+ colour + ";'>" + replace + "</span>";
 						System.out.println("new line is: " + newterm);
 						s = s.replace(replace, newterm);
 						
 						}
+					}
 						
 						linecounter = countLines(s);
 						System.out.println("Line counter at: " + linecounter);
@@ -115,7 +131,7 @@ public class PdfBoxGAEDemo {
 						
 						
 						
-						}
+						
 					
 					
 					

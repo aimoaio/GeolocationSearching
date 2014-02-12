@@ -124,6 +124,7 @@
 	String y = request.getParameter("Y");
 	String w = request.getParameter("W");
 	String h = request.getParameter("H");
+	String manualterm = request.getParameter("term");
 	String term = request.getParameter("street");
 	String term2 = request.getParameter("town");
 	String term3 = request.getParameter("state");
@@ -149,6 +150,7 @@
 
 <form method="post">Pdf url: <input type="text" name="pdfurl"
 	value="<%=pdfurl%>" style="width: 400px;" /><br />
+	Manual Search term: <input type="text" name="term" value="<%=manualterm%>"/> <br/>
 	Search terms: 
 	<input readonly="readonly" type="text" id="streetterm" name="street" value="<%=term%>"/>
 	<input readonly="readonly"type="text" id="townterm" name="town" value="<%=term2%>"/> <br/>
@@ -179,6 +181,7 @@
 	geoterms.add(term3);
 	geoterms.add(term4);
 	geoterms.add(term5);
+	geoterms.add(manualterm);
 	String pdfText = org.jboss.as.quickstarts.helloworld.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
 		
 
@@ -193,6 +196,7 @@ s
 <br />
 Extracted text:
 <br/>
+<a href="#<%=manualterm%>"><%=manualterm%></a> <br/>
 <a href="#<%=term%>"><%=term%></a> <br/>
 <a href="#<%=term2%>"><%=term2%></a>  <br/>
 <a href="#<%=term3%>"><%=term3%></a> <br/>
