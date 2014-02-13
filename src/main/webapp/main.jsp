@@ -5,7 +5,7 @@
 
 <html>
 
-<%@page import="org.jboss.*"%>
+
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -182,7 +182,8 @@
 	geoterms.add(term4);
 	geoterms.add(term5);
 	geoterms.add(manualterm);
-	String pdfText = org.jboss.as.quickstarts.helloworld.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+	ArrayList<String> pdfText = geolocation.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+	String pdfText2 = geolocation.BusParser.Exec(pdfText,geoterms);
 		
 
 	Date endDate = new Date();
@@ -202,7 +203,7 @@ Extracted text:
 <a href="#<%=term3%>"><%=term3%></a> <br/>
 <a href="#<%=term4%>"><%=term4%></a> <br/>
 <a href="#<%=term5%>"><%=term5%></a> <br/>
-<div style="background: #e0e0e0;"><pre><%=pdfText%></pre></div>
+<div style="background: #e0e0e0;"><pre><%=pdfText2%></pre></div>
 
 
 <br />

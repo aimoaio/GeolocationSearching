@@ -1,4 +1,4 @@
-package org.jboss.as.quickstarts.helloworld;
+package geolocation;
 
 import java.io.File;
 import java.io.IOException;
