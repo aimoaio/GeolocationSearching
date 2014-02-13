@@ -123,7 +123,6 @@ public class PdfBoxGAEDemo {
 				text.add(t);
 				}
 				text.add("</table>");
-				text.add("<br/>");
 				doc.close();
 				
 

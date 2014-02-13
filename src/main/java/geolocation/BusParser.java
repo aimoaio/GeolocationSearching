@@ -37,7 +37,17 @@ public class BusParser {
 		for(String row:contents){
 			System.out.println("Row: " + row);
 			
-			if(numberOfDigits(row)>2 && containsDash(row)==false){
+			if(row.contains("Valid")){
+				StringBuilder sb = new StringBuilder();
+				sb.append(row);
+				sb.insert(4, "<td>");
+				sb.insert(row.length()-2, "</td>");
+				System.out.println("Row length: " + row.length());
+				finalCellList.add(sb.toString());
+				System.out.println("Valid row: " + sb.toString());
+			}
+			
+			else if(numberOfDigits(row)>2 && containsDash(row)==false){
 				System.out.println("Digits: " + numberOfDigits(row));
 				ArrayList<String> cells = splitStringSpace(row);
 				position = firstPositionOfNumbers(cells);
@@ -57,14 +67,48 @@ public class BusParser {
 					StringBuilder b = new StringBuilder();
 					b.append("<td>");
 					b.append(cells.get(i));
-					//int CL = cells.get(i).length();
-					//b.insert(CL-1, "</td>");
 					b.append(" ");
 					b.append("</td>");
 					finalCellList.add(b.toString());
 					System.out.println("Cells: " + b.toString());
 				}
-			}  else if(containsDash(row)){
+			}  else if(numberOfDigits(row)>2 && containsDash(row)==true){
+				System.out.println("Digits: " + numberOfDigits(row));
+				ArrayList<String> cells = splitStringSpace(row);
+				
+				position = firstPositionOfNumbers(cells);
+				dashposition = firstPositionOfDashes(cells);
+				
+				int finalposition = 0;
+				if(position>dashposition){
+					finalposition = dashposition;
+				} else {
+					finalposition = position;
+				}
+				
+				StringBuilder b1 = new StringBuilder();
+				
+				for (int j=0; j<finalposition;j++){
+					b1.append(cells.get(j));
+					b1.append(" ");
+				}
+				b1.append(" </td>");
+				b1.insert(4, " <td>");
+				finalCellList.add(b1.toString());
+				System.out.println("F Cells: " + b1.toString());
+				
+				for(int i=finalposition;i<cells.size(); i++){
+					StringBuilder b = new StringBuilder();
+					b.append("<td>");
+					b.append(cells.get(i));
+					b.append(" ");
+					b.append("</td>");
+					finalCellList.add(b.toString());
+					System.out.println("F2 Cells: " + b.toString());
+				}
+			
+			} else if(containsDash(row)){
+			
 				
 				System.out.println("Dash found");
 				ArrayList<String> cells = splitStringSpace(row);
@@ -72,18 +116,20 @@ public class BusParser {
 				
 				StringBuilder b1 = new StringBuilder();
 				
-				for (int j=0; j<position;j++){
+				for (int j=0; j<dashposition;j++){
 					b1.append(cells.get(j));
+					b1.append(" ");
 				}
-				b1.append("</td>");
-				b1.insert(4, "<td>");
+				b1.append(" </td>");
+				b1.insert(4, " <td>");
 				finalCellList.add(b1.toString());
 				System.out.println("D Cells: " + b1.toString());
 				
-				for(int i=position;i<cells.size(); i++){
+				for(int i=dashposition;i<cells.size(); i++){
 					StringBuilder b = new StringBuilder();
 					b.append("<td>");
 					b.append(cells.get(i));
+					b.append(" ");
 					b.append("</td>");
 					finalCellList.add(b.toString());
 					System.out.println("D2 Cells: " + b.toString());
