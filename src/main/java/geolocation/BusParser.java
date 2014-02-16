@@ -42,8 +42,8 @@ public class BusParser {
 			if(row.contains("Valid")){
 				StringBuilder sb = new StringBuilder();
 				sb.append(row);
-				sb.insert(4, "<td> ");
-				sb.insert(row.length()-2, " </td>");
+				sb.insert(4, "<td>");
+				sb.insert(row.length()-2, "</td>");
 				System.out.println("Row length: " + row.length());
 				finalCellList.add(sb.toString());
 				System.out.println("Valid row: " + sb.toString());
@@ -60,17 +60,17 @@ public class BusParser {
 					b1.append(cells.get(j));
 					b1.append(" ");
 				}
-				b1.append(" </td>");
-				b1.insert(4, " <td>");
+				b1.append("</td>");
+				b1.insert(4, "<td>");
 				finalCellList.add(b1.toString());
 				System.out.println("E Cells: " + b1.toString());
 				
 				for(int i=position;i<cells.size(); i++){
 					StringBuilder b = new StringBuilder();
-					b.append("<td> ");
+					b.append("<td>");
 					b.append(cells.get(i));
 					b.append(" ");
-					b.append(" </td>");
+					b.append("</td>");
 					finalCellList.add(b.toString());
 					System.out.println("Cells: " + b.toString());
 				}
@@ -85,19 +85,19 @@ public class BusParser {
 					StringBuilder sb = new StringBuilder();
 					
 					sb.append(cells.get(0));
-					sb.insert(4, "<td> ");
-					sb.append(" </td>");
-					sb.insert(4, "<td> </td>");
+					sb.insert(4, "<td>");
+					sb.append("</td>");
+					sb.insert(4, "<td></td>");
 					System.out.println("First cell: "  + sb.toString());
 					finalCellList.add(sb.toString());
 					
 					
 					for(int i=1;i<cells.size(); i++){
 						StringBuilder b = new StringBuilder();
-						b.append("<td> ");
+						b.append("<td>");
 						b.append(cells.get(i));
 						b.append(" ");
-						b.append(" </td>");
+						b.append("</td>");
 						finalCellList.add(b.toString());
 						System.out.println("Special Cells: " + b.toString());
 					}
@@ -120,17 +120,17 @@ public class BusParser {
 					b1.append(cells.get(j));
 					b1.append(" ");
 				}
-				b1.append(" </td>");
-				b1.insert(4, " <td> ");
+				b1.append("</td>");
+				b1.insert(4, "<td>");
 				finalCellList.add(b1.toString());
 				System.out.println("F Cells: " + b1.toString());
 				
 				for(int i=finalposition;i<cells.size(); i++){
 					StringBuilder b = new StringBuilder();
-					b.append("<td> ");
+					b.append("<td>");
 					b.append(cells.get(i));
 					b.append(" ");
-					b.append(" </td>");
+					b.append("</td>");
 					finalCellList.add(b.toString());
 					System.out.println("F2 Cells: " + b.toString());
 				}
@@ -149,17 +149,17 @@ public class BusParser {
 					b1.append(cells.get(j));
 					b1.append(" ");
 				}
-				b1.append(" </td>");
-				b1.insert(4, " <td> ");
+				b1.append("</td>");
+				b1.insert(4, "<td>");
 				finalCellList.add(b1.toString());
 				System.out.println("D Cells: " + b1.toString());
 				
 				for(int i=dashposition;i<cells.size(); i++){
 					StringBuilder b = new StringBuilder();
-					b.append("<td> ");
+					b.append("<td>");
 					b.append(cells.get(i));
 					b.append(" ");
-					b.append(" </td>");
+					b.append("</td>");
 					finalCellList.add(b.toString());
 					System.out.println("D2 Cells: " + b.toString());
 				}
@@ -173,8 +173,8 @@ public class BusParser {
 				else {
 				StringBuilder sb = new StringBuilder();
 				sb.append(row);
-				sb.insert(4, "<td> ");
-				sb.insert(row.length()-2, " </td>");
+				sb.insert(4, "<td>");
+				sb.insert(row.length()-2, "s</td>");
 				System.out.println("Row length: " + row.length());
 				finalCellList.add(sb.toString());
 				System.out.println("Unedited: " + sb.toString());
