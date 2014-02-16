@@ -5,11 +5,13 @@ import java.util.Collections;
 
 public class BusParser {
 	
-	static ArrayList<String> finalList = new ArrayList<String>();
-	static ArrayList<String> finalCellList = new ArrayList<String>();
-	static ArrayList<String> colours = new ArrayList<String>();
+
 	
 	public static String Exec(ArrayList<String> contents, ArrayList<String> geoterms) {
+		
+		ArrayList<String> finalList = new ArrayList<String>();
+		ArrayList<String> finalCellList = new ArrayList<String>();
+		ArrayList<String> colours = new ArrayList<String>();
 		
 		colours = new ArrayList<String>();
 		
