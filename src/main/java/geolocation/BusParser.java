@@ -174,7 +174,7 @@ public class BusParser {
 				StringBuilder sb = new StringBuilder();
 				sb.append(row);
 				sb.insert(4, "<td>");
-				sb.insert(row.length()-2, "s</td>");
+				sb.insert(row.length()-2, "</td>");
 				System.out.println("Row length: " + row.length());
 				finalCellList.add(sb.toString());
 				System.out.println("Unedited: " + sb.toString());
