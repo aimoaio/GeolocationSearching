@@ -86,7 +86,7 @@ public class PdfBoxGAEDemo {
 				//
 				
 				//loop for pages
-				for (int i=0;i<2; i++){
+				for (int i=0;i<pages.size(); i++){
 					PDPage p = pages.get(i);
 					sa.extractRegions(p);
 					
