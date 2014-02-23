@@ -13,7 +13,7 @@ package geolocation;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class BusParser {
+public class BusParser implements Parser {
 	
 	
 	static ArrayList<String> contents;

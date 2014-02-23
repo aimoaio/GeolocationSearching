@@ -31,10 +31,8 @@
 
             for (i=0;i<results[0].address_components.length;i++){
                 for (j=0;j<results[0].address_components[i].types.length;j++){
-                   if(results[0].address_components[i].types[j]=="country")
-    {
-                      country = results[0].address_components[i].long_name
-    ;
+                   if(results[0].address_components[i].types[j]=="country"){
+                      country = results[0].address_components[i].long_name;
                     }
                     else if(results[0].address_components[i].types[j]=="postal_code"){
                       postcode = results[0].address_components[i].long_name;
