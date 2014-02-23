@@ -1,18 +1,18 @@
 
+<%@page import="geolocation.BusParser"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 
 <html>
 
-
+<%@page import="geolocation.PdfBoxGAEDemo"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
   <head>
     <meta charset="UTF-8" />
     <title>Geolocation and Google Maps API</title>
-	<link rel="stylesheet" type="text/css" href="main.css">	
     <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script>
       function writeAddressName(latLng) {
@@ -68,6 +68,8 @@
       }
  
       function geolocationSuccess(position) {
+
+          //replace with coords for fake location.
         var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // Write the formatted address
         writeAddressName(userLatLng);
@@ -107,7 +109,12 @@
  
       window.onload = geolocateUser;
     </script>
-    
+    <style type="text/css">
+      #map {
+        width: 500px;
+        height: 500px;
+      }
+    </style>
   </head>
   <body>
     <h1>Geolocation basic example</h1>
@@ -138,7 +145,7 @@
 	if (y == null)
 		y = "0";
 	if (w == null)
-		w = "500";
+		w = "700";
 	if (h == null)
 		h = "800";
 
@@ -170,24 +177,28 @@
 	if (request.getParameter("btnSumbit") != null) {
 		if (captchaError.equals("")) {
 
-	Date startDate = new Date();
-	int xx = Integer.parseInt(x);
-	int yy = Integer.parseInt(y);
-	int ww = Integer.parseInt(w);
-	int hh = Integer.parseInt(h);
-	ArrayList<String> geoterms = new ArrayList<String>();
-	geoterms.add(term);
-	geoterms.add(term2);
-	geoterms.add(term3);
-	geoterms.add(term4);
-	geoterms.add(term5);
-	geoterms.add(manualterm);
-	ArrayList<String> pdfText = geolocation.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
-	String pdfText2 = geolocation.BusParser.Exec(pdfText,geoterms);
-		
+			Date startDate = new Date();
+			int xx = Integer.parseInt(x);
+			int yy = Integer.parseInt(y);
+			int ww = Integer.parseInt(w);
+			int hh = Integer.parseInt(h);
+			ArrayList<String> geoterms = new ArrayList<String>();
+			geoterms.add(term);
+			geoterms.add(term2);
+			geoterms.add(term3);
+			geoterms.add(term4);
+			geoterms.add(term5);
+			geoterms.add(manualterm);
+			String pdfText = geolocation.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+			//String pdfText2 = geolocation.BusParser.Exec(pdfText,geoterms);
+			//String pdfText3 = geolocation.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+			//String pdfText = geolocation.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+			pdfText.toString();
 
-	Date endDate = new Date();
-	double deltaSeconds = (endDate.getTime() - startDate.getTime()) / 1000.0;
+			Date endDate = new Date();
+			double deltaSeconds = (endDate.getTime() - startDate.getTime()) / 1000.0;
+			
+			//pdftext2 is what we want to clean up
 %><br />
 <br />
 Time (Http GET + text extraction):
@@ -203,7 +214,7 @@ Extracted text:
 <a href="#<%=term3%>"><%=term3%></a> <br/>
 <a href="#<%=term4%>"><%=term4%></a> <br/>
 <a href="#<%=term5%>"><%=term5%></a> <br/>
-<div style="background: #e0e0e0;"><pre><%=pdfText2%></pre></div>
+<div style="background: #e0e0e0;"><pre><%=pdfText%></pre></div>
 
 
 <br />
@@ -224,9 +235,9 @@ Extracted text v2:
 	}
 %>
 
+
 <a href="http://code.google.com/appengine/" target="_blank"> <img
 	src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
 	alt="Powered by Google App Engine" border="0" /> </a>
-
   </body>
 </html>

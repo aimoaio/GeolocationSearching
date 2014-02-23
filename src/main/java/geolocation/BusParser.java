@@ -15,11 +15,19 @@ import java.util.Collections;
 
 public class BusParser {
 	
+	
+	static ArrayList<String> contents;
+	static ArrayList<String> geoterms;
+	
+	public BusParser(ArrayList<String> contentspassed, ArrayList<String> geotermspassed){
+		contents = contentspassed;
+		geoterms = geotermspassed;
+	}
+	
 
 	
-	public static String Exec(ArrayList<String> contents, ArrayList<String> geoterms) {
+	public String Exec() {
 		
-
 		ArrayList<String> finalCellList = new ArrayList<String>();
 		ArrayList<String> colours = new ArrayList<String>();
 		

@@ -11,7 +11,6 @@ package geolocation;
  */
 
 
-
 import java.awt.geom.Rectangle2D;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -29,26 +28,24 @@ import org.apache.pdfbox.util.PDFTextStripperByArea;
 
 
 
+
 public class PdfBoxGAEDemo {
 
 	private static final Logger log = Logger.getLogger(PdfBoxGAEDemo.class.getName());
-	
-	
 	static ArrayList<String> text;
 	static String s;
 	static ArrayList<String> tokens;
 	static ArrayList<String> HTML;
+	static String finalcontents;
 
 	
-	public static ArrayList<String> Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
+	public static String Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
 
 		log.info("PdfUrl=" + pdfUrl);
 		text = new ArrayList<String>();
 		tokens = new ArrayList<String>();
 		HTML = new ArrayList<String>();
 		
-	
-	
 		try {
 			URL urlObj = new URL(pdfUrl);
 			HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
@@ -62,43 +59,69 @@ public class PdfBoxGAEDemo {
 				RandomAccessBuffer tempMemBuffer = new RandomAccessBuffer();
 				PDDocument doc = PDDocument.load(connection.getInputStream(), tempMemBuffer);
 				
-
 				PDFTextStripperByArea sa = new PDFTextStripperByArea();
 				sa.addRegion("Area1", new Rectangle2D.Double(x, y, w, h));
 				PDDocumentCatalog cat = doc.getDocumentCatalog();
 				List <PDPage> pages = cat.getAllPages();
 				
-				
-				//loop for pages
-				for (int i=0;i<pages.size(); i++){
-					PDPage p = pages.get(i);
-					sa.extractRegions(p);
-					
-					//s is a string of the PAGE
-					s = sa.getTextForRegion("Area1"); //get the text for the page
-					
+				if(pdfUrl.contains("firstgroup")){
+					System.out.println("First bus timetable detected");
+					//loop for pages
+					for (int i=0;i<pages.size(); i++){
+						PDPage p = pages.get(i);
+						sa.extractRegions(p);
 						
-						tokens = splitStrings(s); //split by line
-						for(String tk:tokens){
+						//s is a string of the PAGE
+						s = sa.getTextForRegion("Area1"); //get the text for the page
 						
-							//for every row TK, append relevant tags
-							StringBuilder sb = new StringBuilder();
-							sb.append("<tr>");
-							sb.append(tk);
-							sb.append("</tr> ");
 							
-							String row = sb.toString(); //row of text with tags
-							HTML.add(row); //add row of text with tags
+							tokens = splitStrings(s); //split by line
+							for(String tk:tokens){
+							
+								//for every row TK, append relevant tags
+								StringBuilder sb = new StringBuilder();
+								sb.append("<tr>");
+								sb.append(tk);
+								sb.append("</tr> ");
+								
+								String row = sb.toString(); //row of text with tags
+								HTML.add(row); //add row of text with tags
+							}
+							
+					}
+					
+					//text per page
+					text.add("<table>"); //placing table tags means all the data will be formatted as such.
+					for(String t:HTML){
+					text.add(t);
+					}
+					text.add("</table>");
+					
+					//then we need to go into bus parser
+					BusParser bp = new BusParser(text, terms);
+					finalcontents = bp.Exec();
+					
+				} else {
+					
+					//this is the generic parser - only rips text out, zero formatting.
+					for (int i=0;i<4; i++){
+						PDPage p = pages.get(i);
+						sa.extractRegions(p);
+						
+						//s is a string of the PAGE
+						s = sa.getTextForRegion("Area1"); //get the text for the page
+						text.add(s);
+						
+						StringBuilder appender = new StringBuilder();
+						for(String s:text){
+							appender.append(s);
 						}
 						
+						finalcontents = appender.toString();
+					}
 				}
 				
-				//text per page
-				text.add("<table>"); //placing table tags means all the data will be formatted as such.
-				for(String t:HTML){
-				text.add(t);
-				}
-				text.add("</table>");
+				
 				doc.close();
 				
 
@@ -110,7 +133,7 @@ public class PdfBoxGAEDemo {
 		} catch (Exception e) {
 			log.severe("EXCEPTION: " + e.toString());
 		}
-		return text;
+		return finalcontents;
 	}
 	
 	
