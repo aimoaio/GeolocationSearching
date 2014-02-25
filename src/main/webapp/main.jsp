@@ -206,12 +206,12 @@ s
 <br />
 Extracted text:
 <br/>
-<a href="#<%=manualterm%>"><%=manualterm%></a> <br/>
-<a href="#<%=term%>"><%=term%></a> <br/>
-<a href="#<%=term2%>"><%=term2%></a>  <br/>
-<a href="#<%=term3%>"><%=term3%></a> <br/>
-<a href="#<%=term4%>"><%=term4%></a> <br/>
-<a href="#<%=term5%>"><%=term5%></a> <br/>
+<a href="#<%=manualterm%>1"><%=manualterm%></a> <br/>
+<a href="#<%=term%>1"><%=term%></a> <br/>
+<a href="#<%=term2%>1"><%=term2%></a>  <br/>
+<a href="#<%=term3%>1"><%=term3%></a> <br/>
+<a href="#<%=term4%>1"><%=term4%></a> <br/>
+<a href="#<%=term5%>1"><%=term5%></a> <br/>
 <div style="background: #e0e0e0;"><pre><%=pdfText%></pre></div>
 
 

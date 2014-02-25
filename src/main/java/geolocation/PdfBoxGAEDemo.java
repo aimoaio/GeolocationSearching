@@ -29,6 +29,10 @@ import org.apache.pdfbox.util.PDFTextStripperByArea;
 
 
 
+
+
+
+
 public class PdfBoxGAEDemo {
 
 	private static final Logger log = Logger.getLogger(PdfBoxGAEDemo.class.getName());
@@ -112,13 +116,26 @@ public class PdfBoxGAEDemo {
 						s = sa.getTextForRegion("Area1"); //get the text for the page
 						text.add(s);
 						
-						StringBuilder appender = new StringBuilder();
-						for(String s:text){
-							appender.append(s);
+						tokens = splitStrings(s);
+						
+						
+						for(String s:tokens){
+							if(s.length()>3){
+							HTML.add(s);
+							HTML.add("<br/>");
+							System.out.println("String: " + s + s.length());
+							
+							}
 						}
 						
-						finalcontents = appender.toString();
+						
 					}
+					HTML.add("<br/>"); //extra white line
+					StringBuilder build = new StringBuilder();
+					for(String t:HTML){
+						build.append(t);
+					}
+					finalcontents = build.toString();
 				}
 				
 				
