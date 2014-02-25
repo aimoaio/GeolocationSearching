@@ -267,11 +267,48 @@ public class BusParser implements Parser {
 		}
 		
 		String s = b.toString();
+//		
+//		//and highlighting is added to the string
+//		if(geoterms.size()!=0){
+//			
+//			
+//			/*
+//			 * This will take every term inside the geoterm list (the list of terms to search for)
+//			 * For each term, it will assign the colour in the same position from the colour list
+//			 * (this means each term will have a different colour to distinguish them from the other terms)
+//			 * The system will then replace the term with a newly created string based on the geoterm,
+//			 * which will consist of: the span id tag (for jump links), the term and the unique highlight colour.
+//			 */
+//			for(int j=0;j<geoterms.size();j++){
+//			String replace = geoterms.get(j);
+//			String colour = colours.get(j);
+//			String newterm = "<span id=\""+replace+"\" style='background-color:"+ colour + ";'>" + replace + "</span>";
+//				s = s.replace(replace, newterm);
+//			
+//			}
+//		}
+		
+		
+		//the final string to be returned for display is the string that was replaced with highlighting above
+		ArrayList<String> finalcontents = splitStringsByRow(s);
+		ArrayList<String> cleancontents = new ArrayList<String>();
+		
+		cleancontents.add("<table>");
+		for(String row: finalcontents){
+			StringBuilder build = new StringBuilder();
+			build.append(row);
+			build.append("</tr>");
+			cleancontents.add(build.toString());
+		}
+		
+		cleancontents.add("</table>");
+		
+		
 		
 		//and highlighting is added to the string
 		if(geoterms.size()!=0){
 			
-			
+		
 			/*
 			 * This will take every term inside the geoterm list (the list of terms to search for)
 			 * For each term, it will assign the colour in the same position from the colour list
@@ -282,17 +319,43 @@ public class BusParser implements Parser {
 			for(int j=0;j<geoterms.size();j++){
 			String replace = geoterms.get(j);
 			String colour = colours.get(j);
-			String newterm = "<span id=\""+replace+"\" style='background-color:"+ colour + ";'>" + replace + "</span>";
-				s = s.replace(replace, newterm);
-			
+			ArrayList<String> highlightedcontents = new ArrayList<String>();
+			highlightedcontents = addHighlight(cleancontents, replace, colour);
+			cleancontents = highlightedcontents;
 			}
+			
 		}
 		
 		
-		//the final string to be returned for display is the string that was replaced with highlighting above
-		String finalcontents = s;
+		System.out.println("Final contents: " + cleancontents.toString());
+		StringBuilder sb = new StringBuilder();
+		for(String st: cleancontents){
+			sb.append(st);
+		}
 		
-		return finalcontents;
+		return sb.toString();
+	}
+	
+	private ArrayList<String> addHighlight(ArrayList<String> rows, String geoterm, String colour){
+		
+		ArrayList<String> highlighted = new ArrayList<String>();
+		int anchorcounter = 1;
+		
+		for(int i=0; i<rows.size(); i++){
+			
+			String rowcontent = rows.get(i);
+			
+			if(rowcontent.contains(geoterm)){
+				String replacementcontent = "<span id=\""+geoterm+anchorcounter+"\" style='background-color:"+ colour + ";'>" + "<a href=\"#"+geoterm+(anchorcounter-1)+ "\"> < </a>"+ geoterm + "<a href=\"#"+geoterm+(anchorcounter+1)+ "\"> > </a>" + "</span>"; 
+				rowcontent = rowcontent.replaceFirst(geoterm, replacementcontent);
+				highlighted.add(rowcontent);
+				anchorcounter++;
+			} else {
+				highlighted.add(rowcontent);
+			}
+		}
+		
+		return highlighted;
 	}
 	
 
@@ -300,6 +363,22 @@ public class BusParser implements Parser {
 		ArrayList<String> split = new ArrayList<String>();
 		String[] splited = str.split("\\s+");
 		Collections.addAll(split, splited); 
+		return split;
+	}
+	
+	private static ArrayList<String> splitStringsByRow(String str){
+		ArrayList<String> split = new ArrayList<String>();
+		String[] lines = str.split("</tr>|</table>|<table>");
+		Collections.addAll(split, lines); 
+		
+		return split;
+	}
+	
+	private static ArrayList<String> splitStrings(String str){
+		ArrayList<String> split = new ArrayList<String>();
+		String[] lines = str.split("\r\n|\r|\n");
+		Collections.addAll(split, lines); 
+		
 		return split;
 	}
 	
