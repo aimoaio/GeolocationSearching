@@ -11,6 +11,8 @@ package geolocation;
  */
 
 
+
+
 import java.awt.geom.Rectangle2D;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -41,6 +43,7 @@ public class PdfBoxGAEDemo {
 	static ArrayList<String> tokens;
 	static ArrayList<String> HTML;
 	static String finalcontents;
+	static ArrayList<String> context;
 
 	
 	public static String Exec(String pdfUrl, int x, int y, int w, int h, ArrayList<String> terms) {
@@ -49,6 +52,7 @@ public class PdfBoxGAEDemo {
 		text = new ArrayList<String>();
 		tokens = new ArrayList<String>();
 		HTML = new ArrayList<String>();
+		context = new ArrayList<String>();
 		
 		try {
 			URL urlObj = new URL(pdfUrl);
@@ -108,7 +112,7 @@ public class PdfBoxGAEDemo {
 				} else {
 					
 					//this is the generic parser - only rips text out, zero formatting.
-					for (int i=0;i<4; i++){
+					for (int i=0;i<pages.size(); i++){
 						PDPage p = pages.get(i);
 						sa.extractRegions(p);
 						
@@ -116,33 +120,18 @@ public class PdfBoxGAEDemo {
 						s = sa.getTextForRegion("Area1"); //get the text for the page
 						text.add(s);
 						
-						tokens = splitStrings(s);
-						
-						
-						for(String s:tokens){
-							if(s.length()>3){
-							HTML.add(s);
-							HTML.add("<br/>");
-							System.out.println("String: " + s + s.length());
-							
-							}
-						}
-						
-						
-					}
-					HTML.add("<br/>"); //extra white line
-					StringBuilder build = new StringBuilder();
-					for(String t:HTML){
-						build.append(t);
-					}
-					finalcontents = build.toString();
+					
 				}
 				
+				NorwegianParser np = new NorwegianParser(text, terms);
+				finalcontents = np.Exec();
 				
 				doc.close();
 				
 
-			} else{
+			}
+				}
+			else{
 				throw new Exception("Http return code <> 200. Received: " + httpRespCode);
 			}
 			
