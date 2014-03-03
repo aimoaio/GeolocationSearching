@@ -126,10 +126,11 @@ public class PdfBoxGAEDemo {
 				NorwegianParser np = new NorwegianParser(text, terms);
 				finalcontents = np.Exec();
 				
-				doc.close();
+				
 				
 
 			}
+				doc.close();
 				}
 			else{
 				throw new Exception("Http return code <> 200. Received: " + httpRespCode);

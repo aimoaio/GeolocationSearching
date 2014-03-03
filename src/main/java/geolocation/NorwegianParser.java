@@ -2,6 +2,8 @@ package geolocation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 public class NorwegianParser implements Parser {
 	
@@ -18,14 +20,79 @@ public class NorwegianParser implements Parser {
 	@Override
 	public String Exec() {
 		
-		searchterms.remove(searchterms.size()-1);
+		
 		ArrayList<String> colours = new ArrayList<String>();
+		String address = searchterms.get(searchterms.size()-1);
+		searchterms.remove(searchterms.size()-1);
+
+		//check for stopwords, for duplicates
+		ArrayList<String> tokens = splitStringComma(address);
+		
+		StringBuilder build1 = new StringBuilder();
+		for(String s:tokens){
+			build1.append(s);
+		}
+		
+		ArrayList<String> tokens2 = splitStringSpace(build1.toString());
+		
+		
+		for(int s1=0;s1<tokens2.size(); s1++){
+			String s = tokens2.get(s1);
+			searchterms.add(s);
+			if(s.equalsIgnoreCase("on")){
+				searchterms.remove(s);
+			}
+			else if(s.equals(null)){
+				searchterms.remove(s);
+			}
+		}
+		//ArrayList with duplicates String
+        List<String> duplicateList = searchterms;
+        
+        //Converting ArrayList to HashSet to remove duplicates
+        LinkedHashSet<String> listToSet = new LinkedHashSet<String>(duplicateList);
+      
+        //Creating Arraylist without duplicate values
+        List<String> listWithoutDuplicates = new ArrayList<String>(listToSet);
+
+		
+		System.out.println("Tokens: " + tokens2);
+		System.out.println("GEO: " + listWithoutDuplicates);
+		
+		searchterms = (ArrayList<String>) listWithoutDuplicates;
+		
+		
+		
+		//add colour variation for highlighting terms
 		colours.add("blue");
 		colours.add("yellow");
 		colours.add("green");
 		colours.add("purple");
 		colours.add("pink");
 		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
+		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
+		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
+		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
 	
 		
 		//context
@@ -104,6 +171,19 @@ public class NorwegianParser implements Parser {
 		String[] lines = str.split("\r\n|\r|\n");
 		Collections.addAll(split, lines); 
 		
+		return split;
+	}
+	
+	private static ArrayList<String> splitStringSpace(String str){
+		ArrayList<String> split = new ArrayList<String>();
+		String[] splited = str.split("\\s+");
+		Collections.addAll(split, splited); 
+		return split;
+	}
+	private static ArrayList<String> splitStringComma(String str){
+		ArrayList<String> split = new ArrayList<String>();
+		String[] splited = str.split(",");
+		Collections.addAll(split, splited); 
 		return split;
 	}
 
