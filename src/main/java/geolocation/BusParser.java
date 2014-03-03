@@ -11,7 +11,10 @@ package geolocation;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 public class BusParser implements Parser {
 	
@@ -30,6 +33,46 @@ public class BusParser implements Parser {
 		
 		ArrayList<String> finalCellList = new ArrayList<String>();
 		ArrayList<String> colours = new ArrayList<String>();
+		String test = geoterms.get(2);
+		String address = geoterms.get(geoterms.size()-1);
+		geoterms.remove(geoterms.size()-1);
+
+		//check for stopwords, for duplicates
+		ArrayList<String> tokens = splitStringComma(address);
+		
+		StringBuilder build1 = new StringBuilder();
+		for(String s:tokens){
+			build1.append(s);
+		}
+		
+		ArrayList<String> tokens2 = splitStringSpace(build1.toString());
+		
+		
+		for(int s1=0;s1<tokens2.size(); s1++){
+			String s = tokens2.get(s1);
+			geoterms.add(s);
+			if(s.equalsIgnoreCase("on")){
+				geoterms.remove(s);
+			}
+			else if(s.equals(null)){
+				geoterms.remove(s);
+			}
+		}
+		//ArrayList with duplicates String
+        List<String> duplicateList = geoterms;
+        
+        //Converting ArrayList to HashSet to remove duplicates
+        LinkedHashSet<String> listToSet = new LinkedHashSet<String>(duplicateList);
+      
+        //Creating Arraylist without duplicate values
+        List<String> listWithoutDuplicates = new ArrayList<String>(listToSet);
+
+		
+		System.out.println("Tokens: " + tokens2);
+		System.out.println("GEO: " + listWithoutDuplicates);
+		
+		geoterms = (ArrayList<String>) listWithoutDuplicates;
+		
 		
 		colours = new ArrayList<String>();
 		
@@ -40,6 +83,30 @@ public class BusParser implements Parser {
 		colours.add("purple");
 		colours.add("pink");
 		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
+		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
+		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
+		colours.add("red");
+		colours.add("blue");
+		colours.add("yellow");
+		colours.add("green");
+		colours.add("purple");
+		colours.add("pink");
+		
 		
 		//set initial positions of cell contents to 0
 		int position = 0;
@@ -304,7 +371,7 @@ public class BusParser implements Parser {
 		cleancontents.add("</table>");
 		
 		
-		
+		System.out.println("list of terms before highlight: " + geoterms);
 		//and highlighting is added to the string
 		if(geoterms.size()!=0){
 			
@@ -332,7 +399,8 @@ public class BusParser implements Parser {
 		for(String st: cleancontents){
 			sb.append(st);
 		}
-		
+		System.out.println("add: " + address);
+		System.out.println("test: " + test);
 		return sb.toString();
 	}
 	
@@ -346,9 +414,13 @@ public class BusParser implements Parser {
 			String rowcontent = rows.get(i);
 			
 			if(rowcontent.contains(geoterm)){
+				
+				System.out.println("Geoterm: " + geoterm + anchorcounter);
+				System.out.println("Row Before Alter: " + rowcontent);
 				String replacementcontent = "<span id=\""+geoterm+anchorcounter+"\" style='background-color:"+ colour + ";'>" + "<a href=\"#"+geoterm+(anchorcounter-1)+ "\"> < </a>"+ geoterm + "<a href=\"#"+geoterm+(anchorcounter+1)+ "\"> > </a>" + "</span>"; 
 				rowcontent = rowcontent.replaceFirst(geoterm, replacementcontent);
 				highlighted.add(rowcontent);
+				System.out.println("Row Content: " + rowcontent);
 				anchorcounter++;
 			} else {
 				highlighted.add(rowcontent);
@@ -362,6 +434,12 @@ public class BusParser implements Parser {
 	private static ArrayList<String> splitStringSpace(String str){
 		ArrayList<String> split = new ArrayList<String>();
 		String[] splited = str.split("\\s+");
+		Collections.addAll(split, splited); 
+		return split;
+	}
+	private static ArrayList<String> splitStringComma(String str){
+		ArrayList<String> split = new ArrayList<String>();
+		String[] splited = str.split(",");
 		Collections.addAll(split, splited); 
 		return split;
 	}
