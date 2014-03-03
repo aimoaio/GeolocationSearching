@@ -71,8 +71,8 @@
       function geolocationSuccess(position) {
 
           //replace with coords for fake location.
-        //var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        var userLatLng = new google.maps.LatLng(55.864236999999996,-4.251806);
+        var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+       // var userLatLng = new google.maps.LatLng(55.864236999999996,-4.251806);
         // Write the formatted address
         writeAddressName(userLatLng);
  

@@ -18,6 +18,7 @@ public class NorwegianParser implements Parser {
 	@Override
 	public String Exec() {
 		
+		searchterms.remove(searchterms.size()-1);
 		ArrayList<String> colours = new ArrayList<String>();
 		colours.add("blue");
 		colours.add("yellow");
