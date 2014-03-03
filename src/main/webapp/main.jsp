@@ -28,6 +28,8 @@
             var locality;
             var street;
             var state;
+            var address = results[0].formatted_address;
+            document.getElementById("fulladdress").value = address.toString();
 
             for (i=0;i<results[0].address_components.length;i++){
                 for (j=0;j<results[0].address_components[i].types.length;j++){
@@ -59,6 +61,7 @@
             document.getElementById("stateterm").value = state.toString();
             document.getElementById("countryterm").value = country.toString();
             document.getElementById("postcodeterm").value = postcode.toString();
+            
           }
           else
             document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
@@ -68,7 +71,8 @@
       function geolocationSuccess(position) {
 
           //replace with coords for fake location.
-        var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        //var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var userLatLng = new google.maps.LatLng(55.864236999999996,-4.251806);
         // Write the formatted address
         writeAddressName(userLatLng);
  
@@ -135,6 +139,7 @@
 	String term3 = request.getParameter("state");
 	String term4 = request.getParameter("country");
 	String term5 = request.getParameter("postcode");
+	String add = request.getParameter("address");
 
 	if (pdfurl == null)
 		pdfurl = "";
@@ -162,6 +167,7 @@
 	<input readonly="readonly"type="text" id="stateterm" name="state" value="<%=term3%>"/>
 	<input readonly="readonly"type="text" id="countryterm" name="country" value="<%=term4%>"/>
 	<input readonly="readonly"type="text" id="postcodeterm" name="postcode" value="<%=term5%>"/>
+	<input readonly="readonly" type="text" id="fulladdress" name="address" value="<%=add%>"/>
 	<input type="hidden" name="X" value="<%=x%>"
 	style="width: 50px;" /> <input type="hidden" name="Y" value="<%=y%>"
 	style="width: 50px;" /> <input type="hidden" name="W" value="<%=w%>"
@@ -187,6 +193,7 @@
 			geoterms.add(term4);
 			geoterms.add(term5);
 			geoterms.add(manualterm);
+			geoterms.add(add);
 			String pdfText = geolocation.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
 			//String pdfText2 = geolocation.BusParser.Exec(pdfText,geoterms);
 			//String pdfText3 = geolocation.PdfBoxGAEDemo.Exec(pdfurl, xx, yy, ww, hh, geoterms);
