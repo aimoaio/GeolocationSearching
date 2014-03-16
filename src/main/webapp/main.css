@@ -3,19 +3,17 @@
 
 
 @media screen and (max-device-width: 1136px) {
-  html, body{
-        width: 200px;
+  html, body, #map{
+        width: 900px;
         margin: 2px;
         padding: 1px
       }
-      
-   #map{
-   width: 100px;
-   height: 100px;
-   }
-   
    h1{
    color: red;
    }  
+   
+   #parsed{
+   color: black;
+   }
       
   }
