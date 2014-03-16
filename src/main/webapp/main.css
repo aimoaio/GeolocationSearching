@@ -3,12 +3,16 @@
 
 
 @media screen and (max-device-width: 1136px) {
-  html, body, #map {
-        width: 320px;
+  html, body{
+        width: 680px;
         margin: 2px;
         padding: 1px
       }
       
+   #map{
+   width: 200px;
+   }
+   
    h1{
    color: red;
    }  
