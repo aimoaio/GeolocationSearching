@@ -14,7 +14,7 @@
     <meta charset="UTF-8" />
     <title>Geolocation and Google Maps API</title>
     <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/style.css" />
+    <link type="text/css" rel="stylesheet" href="/main.css" />
     <script>
       function writeAddressName(latLng) {
         var geocoder = new google.maps.Geocoder();
