@@ -4,13 +4,14 @@
 
 @media screen and (max-device-width: 1136px) {
   html, body{
-        width: 680px;
+        width: 200px;
         margin: 2px;
         padding: 1px
       }
       
    #map{
-   width: 200px;
+   width: 100px;
+   height: 100px;
    }
    
    h1{

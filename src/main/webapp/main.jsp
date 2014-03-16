@@ -12,7 +12,7 @@
 <%@page import="java.util.List"%>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Geolocation and Google Maps API</title>
     <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <link type="text/css" rel="stylesheet" href="/main.css" />
