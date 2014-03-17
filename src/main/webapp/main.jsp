@@ -79,10 +79,10 @@
         writeAddressName(userLatLng);
  
         var myOptions = {
-          zoom : 18,
-          center : userLatLng,
-          mapTypeId : google.maps.MapTypeId.ROADMAP
-        };
+        	    zoom: 8,
+        	    center: latlng,
+        	    mapTypeId: 'roadmap'
+        	  };
         // Draw the map
         var mapObject = new google.maps.Map(document.getElementById("map"), myOptions);
         // Place the marker
