@@ -156,9 +156,9 @@
 <div id="searchbar" style="background: #FFFFBB; display: inline-block; padding: 10px;">
 
 <form method="post">Pdf url: <input type="text" name="pdfurl"
-	value="<%=pdfurl%>" style="width: 400px;" /><br />
+	value="<%=pdfurl%>" style="width: 300px;" /><br />
 	Manual Search term: <input type="text" name="term" value="<%=manualterm%>"/> <br/>
-	Search terms: 
+	Search terms: <br/>
 	<input readonly="readonly" type="text" id="streetterm" name="street" value="<%=term%>"/>
 	<input readonly="readonly"type="text" id="townterm" name="town" value="<%=term2%>"/> <br/>
 	<input readonly="readonly"type="text" id="stateterm" name="state" value="<%=term3%>"/>
