@@ -14,7 +14,7 @@
         }
         
 @media screen and (max-device-width: 640px) {
-  html, body {
+  html, body, #searchbar{
         width: 250px;
         margin: 2px;
         padding: 1px

@@ -113,12 +113,7 @@
  
       window.onload = geolocateUser;
     </script>
-    <style type="text/css">
-      #map {
-        width: 500px;
-        height: 500px;
-      }
-    </style>
+  
   </head>
   <body>
     <h1>Geolocation basic example</h1>
@@ -158,7 +153,7 @@
 
 %>
 <br />
-<div style="background: #FFFFBB; display: inline-block; padding: 10px;">
+<div id="searchbar" style="background: #FFFFBB; display: inline-block; padding: 10px;">
 
 <form method="post">Pdf url: <input type="text" name="pdfurl"
 	value="<%=pdfurl%>" style="width: 400px;" /><br />
