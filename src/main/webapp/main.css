@@ -2,18 +2,22 @@
 
 
 
-@media screen and (max-device-width: 1136px) {
-  html, body, #map{
-        width: 900px;
+ html, body, #map {
+        height: 80%;
+        width: 70%;
+        margin: 0px;
+        padding: 0px
+      }
+        
+        h3{
+    	color:red;
+        }
+        
+@media screen and (max-device-width: 640px) {
+  html, body, #map {
+        width: 300px;
         margin: 2px;
         padding: 1px
       }
-   h1{
-   color: red;
-   }  
-   
-   #parsed{
-   color: black;
-   }
-      
-  }
+}
+     
