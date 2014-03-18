@@ -79,7 +79,7 @@
         writeAddressName(userLatLng);
  
         var myOptions = {
-          zoom : 18,
+          zoom : 10,
           center : userLatLng,
           mapTypeId : google.maps.MapTypeId.ROADMAP
         };
