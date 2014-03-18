@@ -15,14 +15,14 @@
         
 @media screen and (max-device-width: 640px) {
   html, body, #searchbar{
-        width: 400px;
+        width: 500px;
         margin: 2px;
         padding: 1px
       }
       
      #map{
-     height:80%;
-     width: 80%;
+     height:60%;
+     width: 60%;
      }
 }
      
