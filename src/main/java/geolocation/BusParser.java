@@ -360,7 +360,7 @@ public class BusParser implements Parser {
 		ArrayList<String> finalcontents = splitStringsByRow(s);
 		ArrayList<String> cleancontents = new ArrayList<String>();
 		
-		cleancontents.add("<table>");
+		cleancontents.add("<table id=\"tbl1\">");
 		for(String row: finalcontents){
 			StringBuilder build = new StringBuilder();
 			build.append(row);

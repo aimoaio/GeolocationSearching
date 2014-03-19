@@ -17,8 +17,12 @@
         background:#e0e0e0;
         }
         
+        #para{
+        width: 70%;
+        }
+        
 @media screen and (max-device-width: 640px) {
-  html, body, #searchbar{
+  html, body, #searchbar, #para{
         width: 350px;
         margin: 2px;
         padding: 1px;

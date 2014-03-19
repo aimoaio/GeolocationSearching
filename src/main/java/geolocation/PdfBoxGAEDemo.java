@@ -99,7 +99,7 @@ public class PdfBoxGAEDemo {
 					}
 					
 					//text per page
-					text.add("<table id=\"tbl\">"); //placing table tags means all the data will be formatted as such.
+					text.add("<table>"); //placing table tags means all the data will be formatted as such.
 					for(String t:HTML){
 					text.add(t);
 					}
