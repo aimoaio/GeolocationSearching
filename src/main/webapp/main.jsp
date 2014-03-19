@@ -216,7 +216,7 @@ Extracted text:
 <a href="#<%=term3%>1"><%=term3%></a> <br/>
 <a href="#<%=term4%>1"><%=term4%></a> <br/>
 <a href="#<%=term5%>1"><%=term5%></a> <br/>
-<div id="parsed" style="background: #e0e0e0;"><pre><%=pdfText%></pre></div>
+<div id="parsed"><pre><%=pdfText%></pre></div>
 
 
 <br />

@@ -14,15 +14,22 @@
         }
         
 @media screen and (max-device-width: 640px) {
-  html, body, #searchbar, #parsed{
-        width: 300px;
+  html, body, #searchbar{
+        width: 350px;
         margin: 2px;
-        padding: 1px
+        padding: 1px;
       }
       
+      #parsed{
+      width: 350px;
+      margin: 2px;
+      background: #e0e0e0;
+      }
+      
+      
      #map{
-     height:60%;
-     width: 60%;
+     height:80%;
+     width: 80%;
      }
 }
      
