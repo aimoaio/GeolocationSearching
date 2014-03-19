@@ -13,6 +13,10 @@
     	color:red;
         }
         
+        #tbl1{
+        background:#e0e0e0;
+        }
+        
 @media screen and (max-device-width: 640px) {
   html, body, #searchbar{
         width: 350px;
@@ -20,7 +24,7 @@
         padding: 1px;
       }
       
-      #parsed{
+      #tbl1{
       width: 350px;
       margin: 2px;
       background: #e0e0e0;
