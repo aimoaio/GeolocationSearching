@@ -22,10 +22,14 @@
         }
         
 @media screen and (max-device-width: 640px) {
-  html, body, #searchbar, #para{
+  html, body, #searchbar{
         width: 350px;
         margin: 2px;
         padding: 1px;
+      }
+      
+      #para {
+      width: 300px;
       }
       
       #tbl1{
