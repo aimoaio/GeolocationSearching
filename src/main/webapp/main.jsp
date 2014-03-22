@@ -122,7 +122,7 @@
     <p><span id="geocodeterms"></span></p>
     <p><span id="town"></span></p>
     <p id="error"></p>
-    <h2>PdfBox on GAE - Limit of 4 page extraction</h2>
+    <h2>PDF Parser</h2>
 	
 <%
 	String pdfurl = request.getParameter("pdfurl");

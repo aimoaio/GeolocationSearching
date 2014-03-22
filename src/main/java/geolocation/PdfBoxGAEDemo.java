@@ -123,10 +123,19 @@ public class PdfBoxGAEDemo {
 					
 				}
 				
-				NorwegianParser np = new NorwegianParser(text, terms);
-				finalcontents = np.Exec();
-				
-				
+					NorwegianParser np = new NorwegianParser(text, terms);
+					finalcontents = np.Exec();
+					System.out.println(finalcontents.length());
+					if(finalcontents.length()==4){
+						
+						StringBuilder builder = new StringBuilder();
+						for (String textstuff :text){
+							builder.append(textstuff);
+						}
+						
+						builder.insert(0, "<span style='background-color: yellow;'> WARNING: NO MATCHING TERMS FOUND. </span><br/>");
+						finalcontents = builder.toString();
+					}
 				
 
 			}
