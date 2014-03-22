@@ -133,11 +133,14 @@ public class PdfBoxGAEDemo {
 				doc.close();
 				}
 			else{
+				finalcontents = "Blank or Invalid URL";
 				throw new Exception("Http return code <> 200. Received: " + httpRespCode);
+				
 			}
 			
 
 		} catch (Exception e) {
+			finalcontents = "Blank or Invalid URL";
 			log.severe("EXCEPTION: " + e.toString());
 		}
 		return finalcontents;
