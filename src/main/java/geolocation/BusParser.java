@@ -5,13 +5,20 @@ package geolocation;
  * FirstBus PDF timetables will be formatted correctly as such. Other PDFs
  * will fail to display correctly due to the detection systems in place designed
  * for tables and row information.
- * Therefore it is recommended that a new check for the type of PDF document
- * be implemented in the demo class to ensure that only timetables from the firstgroup
- * website are passed into this class when deciding on the parser for formatting.
+ * 
+ * The first stage involves checking and tidying up of the geoterms. The geoterms
+ * should not contain stopwords such as on, opp and there should be no duplicates 
+ * in the list.
+ * 
+ * Once this is done, the system loops through the row contents passed by the extractor
+ * class and matches these against certain rules to determine which type of formatting
+ * will be required. Formatting is unique to the type of row content and failure to
+ * format correctly will result in a broken table being displayed. Ensuring appropriate
+ * tags are implemented is crucial to displaying a timetable correctly.
+ * 
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -27,27 +34,57 @@ public class BusParser implements Parser {
 		geoterms = geotermspassed;
 	}
 	
-
+	/**
+	 * The entire first part of this method is the same as the other parsers (search term cleanup and colour
+	 * assignment). The comments are also the exact same, assuming the reader has not read the comments
+	 * for the other parsers.
+	 */
 	
-	public String Exec() {
+	@Override
+	public String format() {
 		
 		ArrayList<String> finalCellList = new ArrayList<String>();
 		ArrayList<String> colours = new ArrayList<String>();
-		String test = geoterms.get(2);
-		String address = geoterms.get(geoterms.size()-1);
-		geoterms.remove(geoterms.size()-1);
+		
+		
+		String address = geoterms.get(geoterms.size()-1); //this is the full reverse geocoded address
+		geoterms.remove(geoterms.size()-1); //remove the address from the geoterm list (don't want it searching same content twice!)
 
-		//check for stopwords, for duplicates
-		ArrayList<String> tokens = splitStringComma(address);
+		/*
+		 * Now we need to check for any duplicate search terms.
+		 * For example, Glasgow and Glasgow City. The only term we need to search here is "Glasgow"
+		 * In the event the fully reverse geocoded address is used, we must break up the address. This may lead
+		 * to terms such as opp, on etc. We do not want these to be highlighted so they must be removed from the
+		 * search term list. Additional stopwords can be added here, such as "bus" and "station", neither of
+		 * which are of much use as they are too generic.
+		 */
+		
+		ArrayList<String> tokens = splitStringComma(address); //break the address component based on commas.
+		
+		
+		/* 
+		 * We must reconstruct the new address without the commas first. This is because the split address
+		 * returned by the above method will have broken the address like so: 
+		 * "Glasgow, Glasgow City G2, UK becomes
+		 * Glasgow | Glasgow City G2 and UK.
+		 * Splitting by white space means the commas are still attached. Therefore we must first remove the commas,
+		 * then resplit the string based on white space so get the following instead:
+		 * Glasgow, Glasgow, City, G2, UK.
+		 * 
+		 */
 		
 		StringBuilder build1 = new StringBuilder();
 		for(String s:tokens){
 			build1.append(s);
 		}
 		
-		ArrayList<String> tokens2 = splitStringSpace(build1.toString());
+		ArrayList<String> tokens2 = splitStringSpace(build1.toString()); //break the new address based on white spaces.
 		
-		
+		/*
+		 * Now we remove any stopwords or additional useless words we do not want searched.
+		 * Also any NULL terms (returned when geocoder fails to separate components) should be
+		 * removed before checking for duplicates.
+		 */
 		for(int s1=0;s1<tokens2.size(); s1++){
 			String s = tokens2.get(s1);
 			geoterms.add(s);
@@ -58,25 +95,27 @@ public class BusParser implements Parser {
 				geoterms.remove(s);
 			}
 		}
-		//ArrayList with duplicates String
-        List<String> duplicateList = geoterms;
-        
-        //Converting ArrayList to HashSet to remove duplicates
-        LinkedHashSet<String> listToSet = new LinkedHashSet<String>(duplicateList);
-      
-        //Creating Arraylist without duplicate values
-        List<String> listWithoutDuplicates = new ArrayList<String>(listToSet);
+		
+		/*
+		 * Now we remove the duplicates by converting our list a LinkedHashSet and then back.
+		 */
+		
+        List<String> duplicateList = geoterms; //ArrayList with duplicates String
+        LinkedHashSet<String> listToSet = new LinkedHashSet<String>(duplicateList); //Converting ArrayList to HashSet to remove duplicates
+        List<String> listWithoutDuplicates = new ArrayList<String>(listToSet); //Creating Arraylist without duplicate values
 
 		
-		System.out.println("Tokens: " + tokens2);
-		System.out.println("GEO: " + listWithoutDuplicates);
-		
-		geoterms = (ArrayList<String>) listWithoutDuplicates;
+		geoterms = (ArrayList<String>) listWithoutDuplicates; //assign the new list to our geoterms list
 		
 		
 		colours = new ArrayList<String>();
 		
-		//add colour variation for highlighting terms
+		/*
+		 * Add colour variation for highlighting terms.
+		 * A minimum of 6 tends to ensure that each term highlighted is a unique colour.
+		 * However due to the larger number of terms returned when breaking the address component,
+		 * the number assigned to each term may differ per PDF. (First term is not always highlighted blue.)
+		 */
 		colours.add("blue");
 		colours.add("yellow");
 		colours.add("green");
@@ -108,14 +147,19 @@ public class BusParser implements Parser {
 		colours.add("pink");
 		
 		
-		//set initial positions of cell contents to 0
-		int position = 0;
+		
+		int position = 0; //set initial positions of cell contents to 0
 		int dashposition = 0;
 		
 		
-		//looping over every row of contents extracted previously
+		/*
+		 * Now we loop over each row to see how we should format it appropriately.
+		 * This is done inside a massive if/else statement. A case statement does not
+		 * work very well as we are checking multiple scenarios as opposed to a single
+		 * parameter.
+		 */
+		
 		for(String row:contents){
-			System.out.println("Row: " + row);
 			
 			
 			/* If the row contains the world valid, then it is a date and despite containing
@@ -126,13 +170,9 @@ public class BusParser implements Parser {
 			 */
 			
 			if(row.contains("Valid")){
-				StringBuilder sb = new StringBuilder();
-				sb.append(row);
-				sb.insert(4, "<td>");
-				sb.insert(row.length()-2, "</td>");
-				System.out.println("Row length: " + row.length());
-				finalCellList.add(sb.toString());
-				System.out.println("Valid row: " + sb.toString());
+				
+				String content = validDateFormat(row);
+				finalCellList.add(content);
 			}
 			
 			/*
@@ -149,7 +189,7 @@ public class BusParser implements Parser {
 			 */
 			
 			else if(numberOfDigits(row)>2 && containsDash(row)==false){
-				System.out.println("Digits: " + numberOfDigits(row));
+				
 				ArrayList<String> cells = splitStringSpace(row);
 				position = firstPositionOfNumbers(cells);
 				
@@ -162,16 +202,14 @@ public class BusParser implements Parser {
 				b1.append("</td>");
 				b1.insert(4, "<td>");
 				finalCellList.add(b1.toString());
-				System.out.println("E Cells: " + b1.toString());
 				
 				for(int i=position;i<cells.size(); i++){
-					StringBuilder b = new StringBuilder();
-					b.append("<td>");
-					b.append(cells.get(i));
-					b.append(" ");
-					b.append("</td>");
-					finalCellList.add(b.toString());
-					System.out.println("Cells: " + b.toString());
+					StringBuilder b2 = new StringBuilder();
+					b2.append("<td>");
+					b2.append(cells.get(i));
+					b2.append(" ");
+					b2.append("</td>");
+					finalCellList.add(b2.toString());
 				}
 			}  
 			
@@ -192,12 +230,13 @@ public class BusParser implements Parser {
 			 * first position of number and dash occurrence. the positions are then compared and 
 			 * the lower number is set as the loop number for the rest of the cells. Anything before
 			 * this position, will require the <td> tag inserted at position 4 because of the <tr> tags
-			 * and then everything within that area and the positon is appended.
+			 * and then everything within that area and the position is appended.
 			 * Everything afterwards can be looped and appended appropriately. 
 			 */
 			
 			else if(numberOfDigits(row)>2 && containsDash(row)==true){
-				System.out.println("Digits: " + numberOfDigits(row));
+				
+				
 				ArrayList<String> cells = splitStringSpace(row);
 				
 				if(isTimeValue(cells.get(0))==true){
@@ -206,7 +245,6 @@ public class BusParser implements Parser {
 					sb.insert(4, "<td>");
 					sb.append("</td>");
 					sb.insert(4, "<td></td>");
-					System.out.println("First cell: "  + sb.toString());
 					finalCellList.add(sb.toString());
 					
 					
@@ -217,48 +255,44 @@ public class BusParser implements Parser {
 						b.append(" ");
 						b.append("</td>");
 						finalCellList.add(b.toString());
-						System.out.println("Special Cells: " + b.toString());
 					}
 					
-				} 
+				} else {
 				
-				else {
+					position = firstPositionOfNumbers(cells);
+					dashposition = firstPositionOfDashes(cells);
+
+					int finalposition = 0;
 				
-				position = firstPositionOfNumbers(cells);
-				dashposition = firstPositionOfDashes(cells);
-				int finalposition = 0;
+						if(position>dashposition){
+							finalposition = dashposition;
+						} else {
+							finalposition = position;
+						}
 				
-					if(position>dashposition){
-						finalposition = dashposition;
-					} 
+					StringBuilder b1 = new StringBuilder();
+				
 					
-					else {
-						finalposition = position;
+					for (int j=0; j<finalposition;j++){
+						b1.append(cells.get(j));
+						b1.append(" ");
 					}
 				
-				StringBuilder b1 = new StringBuilder();
-				for (int j=0; j<finalposition;j++){
-					b1.append(cells.get(j));
-					b1.append(" ");
-				}
+					b1.append("</td>");
+					b1.insert(4, "<td>");
+					finalCellList.add(b1.toString());
 				
-				b1.append("</td>");
-				b1.insert(4, "<td>");
-				finalCellList.add(b1.toString());
-				System.out.println("F Cells: " + b1.toString());
-				
-				for(int i=finalposition;i<cells.size(); i++){
-					StringBuilder b = new StringBuilder();
-					b.append("<td>");
-					b.append(cells.get(i));
-					b.append(" ");
-					b.append("</td>");
-					finalCellList.add(b.toString());
-					System.out.println("F2 Cells: " + b.toString());
-				}
+					for(int i=finalposition;i<cells.size(); i++){
+						StringBuilder b = new StringBuilder();
+						b.append("<td>");
+						b.append(cells.get(i));
+						b.append(" ");
+						b.append("</td>");
+						finalCellList.add(b.toString());
+					}
 				}
 			
-				} 
+			} 
 			
 			/*
 			 * If the row fails the above checks but contains dashes, then it simply
@@ -269,30 +303,30 @@ public class BusParser implements Parser {
 			 * is appended into separate tags.
 			 */
 				else if(containsDash(row)){
-				System.out.println("Dash found");
-				ArrayList<String> cells = splitStringSpace(row);
-				dashposition = firstPositionOfDashes(cells);
+					
+					ArrayList<String> cells = splitStringSpace(row);
+					dashposition = firstPositionOfDashes(cells);
 				
-				StringBuilder b1 = new StringBuilder();
-				for (int j=0; j<dashposition;j++){
-					b1.append(cells.get(j));
-					b1.append(" ");
-				}
+					StringBuilder b1 = new StringBuilder();
 				
-				b1.append("</td>");
-				b1.insert(4, "<td>");
-				finalCellList.add(b1.toString());
-				System.out.println("D Cells: " + b1.toString());
+					for (int j=0; j<dashposition;j++){
+						b1.append(cells.get(j));
+						b1.append(" ");
+					}
 				
-				for(int i=dashposition;i<cells.size(); i++){
-					StringBuilder b = new StringBuilder();
-					b.append("<td>");
-					b.append(cells.get(i));
-					b.append(" ");
-					b.append("</td>");
-					finalCellList.add(b.toString());
-					System.out.println("D2 Cells: " + b.toString());
-				}
+					b1.append("</td>");
+					b1.insert(4, "<td>");
+					finalCellList.add(b1.toString());
+				
+				
+					for(int i=dashposition;i<cells.size(); i++){
+						StringBuilder b = new StringBuilder();
+						b.append("<td>");
+						b.append(cells.get(i));
+						b.append(" ");
+						b.append("</td>");
+						finalCellList.add(b.toString());
+					}
 				}
 			
 				/*
@@ -316,51 +350,37 @@ public class BusParser implements Parser {
 				 */
 				else {
 					
-				StringBuilder sb = new StringBuilder();
-				sb.append(row);
-				sb.insert(4, "<td>");
-				sb.insert(row.length()-2, "</td>");
-				System.out.println("Row length: " + row.length());
-				finalCellList.add(sb.toString());
-				System.out.println("Unedited: " + sb.toString());
+					StringBuilder sb = new StringBuilder();
+					sb.append(row);
+					sb.insert(4, "<td>");
+					sb.insert(row.length()-2, "</td>");
+					finalCellList.add(sb.toString());
+				
 				}
 		
 		}
 		
-		//the newly formatted cells are then appended into a single string
+		/*
+		 * The newly formatted cells are then appended into a single string for highlighting and
+		 * addition of jump links.
+		 */
+		
 		StringBuilder b = new StringBuilder();
 		for(String s:finalCellList){
 			b.append(s);
 		}
 		
-		String s = b.toString();
-//		
-//		//and highlighting is added to the string
-//		if(geoterms.size()!=0){
-//			
-//			
-//			/*
-//			 * This will take every term inside the geoterm list (the list of terms to search for)
-//			 * For each term, it will assign the colour in the same position from the colour list
-//			 * (this means each term will have a different colour to distinguish them from the other terms)
-//			 * The system will then replace the term with a newly created string based on the geoterm,
-//			 * which will consist of: the span id tag (for jump links), the term and the unique highlight colour.
-//			 */
-//			for(int j=0;j<geoterms.size();j++){
-//			String replace = geoterms.get(j);
-//			String colour = colours.get(j);
-//			String newterm = "<span id=\""+replace+"\" style='background-color:"+ colour + ";'>" + replace + "</span>";
-//				s = s.replace(replace, newterm);
-//			
-//			}
-//		}
+		String s = b.toString(); 
 		
-		
-		//the final string to be returned for display is the string that was replaced with highlighting above
+		/*
+		 * First we must clean up the contents a little by modifying the table and adding an additional </tr> closing
+		 * tag to each row. This is to ensure each row is closed properly allowing the table to be displayed correctly.
+		 */
 		ArrayList<String> finalcontents = splitStringsByRow(s);
 		ArrayList<String> cleancontents = new ArrayList<String>();
 		
 		cleancontents.add("<table id=\"tbl1\">");
+		
 		for(String row: finalcontents){
 			StringBuilder build = new StringBuilder();
 			build.append(row);
@@ -371,11 +391,9 @@ public class BusParser implements Parser {
 		cleancontents.add("</table>");
 		
 		
-		System.out.println("list of terms before highlight: " + geoterms);
-		//and highlighting is added to the string
-		if(geoterms.size()!=0){
-			
 		
+		if(geoterms.size()!=0){ //assuming the geoterm list is not empty (and it never should be)...
+			
 			/*
 			 * This will take every term inside the geoterm list (the list of terms to search for)
 			 * For each term, it will assign the colour in the same position from the colour list
@@ -383,46 +401,84 @@ public class BusParser implements Parser {
 			 * The system will then replace the term with a newly created string based on the geoterm,
 			 * which will consist of: the span id tag (for jump links), the term and the unique highlight colour.
 			 */
+			
 			for(int j=0;j<geoterms.size();j++){
-			String replace = geoterms.get(j);
-			String colour = colours.get(j);
-			ArrayList<String> highlightedcontents = new ArrayList<String>();
-			highlightedcontents = addHighlight(cleancontents, replace, colour);
-			cleancontents = highlightedcontents;
+				String replace = geoterms.get(j);
+				String colour = colours.get(j);
+				ArrayList<String> highlightedcontents = new ArrayList<String>();
+				highlightedcontents = addHighlight(cleancontents, replace, colour);
+				cleancontents = highlightedcontents;
 			}
 			
 		}
 		
-		
-		System.out.println("Final contents: " + cleancontents.toString());
+		/*
+		 * Now the updated clean contents with highlighting and jump links are appended to a single string
+		 * and returned to the TextExtractor class which then passes it back to main.jsp for display.
+		 */
 		StringBuilder sb = new StringBuilder();
 		for(String st: cleancontents){
 			sb.append(st);
 		}
-		System.out.println("add: " + address);
-		System.out.println("test: " + test);
 		return sb.toString();
 	}
 	
-	private ArrayList<String> addHighlight(ArrayList<String> rows, String geoterm, String colour){
+	
+	/**
+	 * Simply appends <td> tags to the valid date row.
+	 * @param row - the row to be appended to.
+	 * @return a string of the row with appended tags.
+	 */
+	private String validDateFormat(String row) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(row);
+		sb.insert(4, "<td>");
+		sb.insert(row.length()-2, "</td>");
+		return sb.toString();
+	}
+
+	
+	/**
+	 * Returns a list of the rows with highlighting and jump links added.
+	 */
+	@Override
+	public ArrayList<String> addHighlight(ArrayList<String> rows, String geoterm, String colour){
 		
 		ArrayList<String> highlighted = new ArrayList<String>();
-		int anchorcounter = 1;
+		
+		int anchorcounter = 1; //this counter is used for numbering the jump links
 		
 		for(int i=0; i<rows.size(); i++){
 			
 			String rowcontent = rows.get(i);
 			
-			if(rowcontent.contains(geoterm)){
+			if(rowcontent.contains(geoterm)){ //if the term exists in the row
 				
-				System.out.println("Geoterm: " + geoterm + anchorcounter);
-				System.out.println("Row Before Alter: " + rowcontent);
-				String replacementcontent = "<span id=\""+geoterm+anchorcounter+"\" style='background-color:"+ colour + ";'>" + "<a href=\"#"+geoterm+(anchorcounter-1)+ "\"> < </a>"+ geoterm + "<a href=\"#"+geoterm+(anchorcounter+1)+ "\"> > </a>" + "</span>"; 
+				/*
+				 * The new content includes:-
+				 * Span id = made up of the geoterm and its placement of occurrence (first of its term to occur, second etc).
+				 * Background colour = the highlight colour. Randomly selected.
+				 * A "<" that links to the previous anchor (geoterm, -1 on placement)
+				 * The term itself.
+				 * A ">" that links to the next anchor (geoterm, +1 on placement)
+				 * 
+				 */
+				String replacementcontent = "<span id=\""+geoterm+anchorcounter+"\" style='background-color:"+ 
+				colour + ";'>" + "<a href=\"#"+geoterm+(anchorcounter-1)+ "\"> < </a>"+ geoterm + 
+				"<a href=\"#"+geoterm+(anchorcounter+1)+ "\"> > </a>" + "</span>"; 
+				
+				/*
+				 * Then we replace the old row with the newly created string and
+				 * add this to the final list to be returned to the parser.
+				 * If this IF was executed, then a term was found. This means anchor
+				 * counter should also be incremented so we can keep track of
+				 * each term's occurrence rate.
+				 */
 				rowcontent = rowcontent.replaceFirst(geoterm, replacementcontent);
 				highlighted.add(rowcontent);
-				System.out.println("Row Content: " + rowcontent);
 				anchorcounter++;
-			} else {
+				
+			} else { //no need to highlight anything, return the row as is
 				highlighted.add(rowcontent);
 			}
 		}
@@ -430,13 +486,24 @@ public class BusParser implements Parser {
 		return highlighted;
 	}
 	
-
+	
+	/**
+	 * Splits the string based on white space.
+	 * @param str - the string to be split
+	 * @return a list of words broken from the string
+	 */
 	private static ArrayList<String> splitStringSpace(String str){
 		ArrayList<String> split = new ArrayList<String>();
 		String[] splited = str.split("\\s+");
 		Collections.addAll(split, splited); 
 		return split;
 	}
+	
+	/**
+	 * Splits the string based on commas.
+	 * @param str - the string to be split
+	 * @return a list of words without commas
+	 */
 	private static ArrayList<String> splitStringComma(String str){
 		ArrayList<String> split = new ArrayList<String>();
 		String[] splited = str.split(",");
@@ -444,22 +511,23 @@ public class BusParser implements Parser {
 		return split;
 	}
 	
+	/**
+	 * Splits the string based on table row information
+	 * @param str - the string to be split
+	 * @return a list of strings for each row
+	 */
 	private static ArrayList<String> splitStringsByRow(String str){
 		ArrayList<String> split = new ArrayList<String>();
 		String[] lines = str.split("</tr>|</table>|<table>");
 		Collections.addAll(split, lines); 
-		
 		return split;
 	}
 	
-	private static ArrayList<String> splitStrings(String str){
-		ArrayList<String> split = new ArrayList<String>();
-		String[] lines = str.split("\r\n|\r|\n");
-		Collections.addAll(split, lines); 
-		
-		return split;
-	}
-	
+	/**
+	 * Check for digits in a string
+	 * @param s - the string to check
+	 * @return true if numbers are found, else false
+	 */
 	public final static boolean containsDigit(String s) {
 	    boolean containsDigit = false;
 
@@ -474,6 +542,11 @@ public class BusParser implements Parser {
 	    return containsDigit;
 	}
 	
+	/**
+	 * Checks for dashes in a string
+	 * @param s - the string to check
+	 * @return true if dashes are found, else false
+	 */
 	public final static boolean containsDash(String s) {
 	    boolean containsDash = false;
 
@@ -486,6 +559,11 @@ public class BusParser implements Parser {
 	    return containsDash;
 	}
 	
+	/**
+	 * Counts the number of digits in a string
+	 * @param s - the string to count
+	 * @return the number of digits found in the string
+	 */
 	public final static int numberOfDigits(String s) {
 	    int counter=0;
 
@@ -499,8 +577,13 @@ public class BusParser implements Parser {
 
 	    return counter;
 	}
-		
-		private static int firstPositionOfNumbers(ArrayList<String> s){
+	
+	/**
+	 * Looks for the first instance in which numbers occur 
+	 * @param s - the list of strings to search through
+	 * @return the position of the first position in which numbers have appeared
+	 */
+	private static int firstPositionOfNumbers(ArrayList<String> s){
 			int position = 0;
 			for(int i=0;i<s.size();i++){
 				if(containsDigit(s.get(i))){
@@ -509,9 +592,14 @@ public class BusParser implements Parser {
 				}
 			} return position;
 
-		}
-		
-		private static int firstPositionOfDashes(ArrayList<String> s){
+	}
+	
+	/**
+	 * Looks for the first instance in which dashes occur
+	 * @param s - the list of strings to search
+	 * @return the first position in which dashes have appeared
+	 */
+	private static int firstPositionOfDashes(ArrayList<String> s){
 			int position = 0;
 			for(int i=0;i<s.size();i++){
 				if(s.get(i).contains("-")){
@@ -520,15 +608,20 @@ public class BusParser implements Parser {
 				}
 			} return position;
 
-		}
+	}
 		
-		private static boolean isTimeValue(String s){
+	/**
+	 * Checks to see if the string is a time value (time data is defined as 4 digits in a string)
+	 * @param s - the string to check
+	 * @return true if 4 digits are found, else false
+	 */
+	private static boolean isTimeValue(String s){
 			int digits = numberOfDigits(s);
 			boolean isTime = false;
 			if(digits==4){
 				isTime = true;
 			}
 			return isTime;
-		}
+	}
 
 }
