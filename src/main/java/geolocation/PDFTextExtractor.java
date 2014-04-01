@@ -222,6 +222,7 @@ public class PDFTextExtractor {
 			
 
 		} catch (Exception e) {
+			finalcontents = "Blank or Invalid URL";
 			log.severe("EXCEPTION: " + e.toString());
 		}
 		return finalcontents;
