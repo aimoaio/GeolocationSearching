@@ -215,14 +215,14 @@ public class PDFTextExtractor {
 			 * an error message to the user.
 			 */
 			else {
-				finalcontents = "Blank or Invalid URL";
+				finalcontents = "<div id=\"tbl2\">Blank or Invalid URL</div>";
 				throw new Exception("Http return code <> 200. Received: " + httpRespCode);
 				
 			}
 			
 
 		} catch (Exception e) {
-			finalcontents = "Blank or Invalid URL";
+			finalcontents = "<div id=\"tbl2\">Blank or Invalid URL</div>";
 			log.severe("EXCEPTION: " + e.toString());
 		}
 		return finalcontents;

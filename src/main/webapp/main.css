@@ -17,6 +17,10 @@
         background:#e0e0e0;
         }
         
+        #tbl2{
+        background:yellow
+        }
+        
         #para{
         width: 70%;
         }
@@ -36,6 +40,12 @@
       width: 350px;
       margin: 2px;
       background: #e0e0e0;
+      }
+      
+      #tbl2{
+      width: 350px;
+      margin: 2px;
+      background: yellow;
       }
       
       
