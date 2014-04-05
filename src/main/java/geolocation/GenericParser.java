@@ -190,6 +190,8 @@ public class GenericParser implements Parser {
 		
 		StringBuilder build = new StringBuilder();
 		
+		rows.add(0, "<div id=\"tbl1\">");
+		
 		for(String s: rows){
 			build.append("<br>"); //append a <br> tag so contents are displayed on their own rows
 			build.append(s);
