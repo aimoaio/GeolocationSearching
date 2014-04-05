@@ -25,7 +25,7 @@
         width: 70%;
         }
         
-@media screen and (max-device-width: 320px) {
+@media screen and (max-device-width: 640px) {
   html, body, #searchbar{
         width: 350px;
         margin: 2px;
@@ -44,35 +44,6 @@
       
       #tbl2{
       width: 350px;
-      margin: 2px;
-      background: yellow;
-      }
-      
-      
-     #map{
-     height:80%;
-     width: 80%;
-     }
-     
-@media screen and (max-device-width: 640px) {
-  html, body, #searchbar{
-        width: 600px;
-        margin: 2px;
-        padding: 1px;
-      }
-      
-      #para {
-      width: 600px;
-      }
-      
-      #tbl1{
-      width: 650px;
-      margin: 2px;
-      background: #e0e0e0;
-      }
-      
-      #tbl2{
-      width: 650px;
       margin: 2px;
       background: yellow;
       }
