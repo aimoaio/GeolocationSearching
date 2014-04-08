@@ -1,4 +1,4 @@
-package geolocation;
+package extractor;
 
 /**
  * 
@@ -31,6 +31,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.util.PDFTextStripperByArea;
+
+import parsers.BusParser;
+import parsers.GenericParser;
+import parsers.NorwegianRoadDataParser;
 
 
 
@@ -167,7 +171,7 @@ public class PDFTextExtractor {
 						 * we want it to be displayed as a warning.
 						 * The final contents are then converted to a string.
 						 */
-						builder.insert(0, "<span style='background-color: yellow;'> WARNING: NO MATCHING TERMS FOUND. </span><br/>");
+						builder.insert(0, "<span style='background-color: yellow;'> WARNING: NO MATCHING TERMS FOUND. "+finalcontents.length() + "</span><br/>");
 						finalcontents = builder.toString();
 					}
 				

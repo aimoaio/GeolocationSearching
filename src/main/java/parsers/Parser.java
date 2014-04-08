@@ -1,4 +1,4 @@
-package geolocation;
+package parsers;
 
 /**
  * An interface for all classes that implement the Parser interface.

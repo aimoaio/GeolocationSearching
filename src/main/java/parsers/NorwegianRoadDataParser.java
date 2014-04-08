@@ -1,10 +1,16 @@
-package geolocation;
+package parsers;
 
-/**
- * This class is identical to the NorwegianRoadDataParser which first served as the sample
- * for a generic parser. In time and future upgrades, this class will most likely be unchanged,
- * as the NorwegianRoadDataParser is more complex and may require additional features for
- * formatting the contents more appropriately. 
+/** 
+ * This class is for parsing the Norwegian road data PDFs. 
+ * 
+ * The first stage involves checking and tidying up of the geoterms. The geoterms
+ * should not contain stopwords such as on, opp and there should be no duplicates 
+ * in the list.
+ * 
+ * The contents are then filtered, pages that do not contain any of the search terms
+ * passed into the system are ignored. Pages which do contain the search terms are returned,
+ * with the page number and the search term highlighted. Jump links are also added to the search terms.
+ * 
  */
 
 import java.util.ArrayList;
@@ -12,12 +18,12 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-public class GenericParser implements Parser {
+public class NorwegianRoadDataParser implements Parser {
 	
 	ArrayList<String> pagecontents;
 	ArrayList<String> searchterms;
 	
-	public GenericParser(ArrayList<String> pages, ArrayList<String> terms){
+	public NorwegianRoadDataParser(ArrayList<String> pages, ArrayList<String> terms){
 		
 		pagecontents = pages;
 		searchterms = terms;

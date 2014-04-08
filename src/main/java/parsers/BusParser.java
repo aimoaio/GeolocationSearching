@@ -1,4 +1,4 @@
-package geolocation;
+package parsers;
 
 /** 
  * This class is for parsing the FirstGroup bus timetables. This means only

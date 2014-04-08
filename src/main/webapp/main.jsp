@@ -1,12 +1,12 @@
 
-<%@page import="geolocation.BusParser"%>
+<%@page import="parsers.BusParser"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 
 <html>
 
-<%@page import="geolocation.PDFTextExtractor"%>
+<%@page import="extractor.PDFTextExtractor"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -140,31 +140,31 @@
 	
 <%
 		String pdfurl = request.getParameter("pdfurl");
-		String x = request.getParameter("X");
-		String y = request.getParameter("Y");
-		String w = request.getParameter("W");
-		String h = request.getParameter("H");
-		String manualterm = request.getParameter("term");
-		String term = request.getParameter("street");
-		String term2 = request.getParameter("town");
-		String term3 = request.getParameter("state");
-		String term4 = request.getParameter("country");
-		String term5 = request.getParameter("postcode");
-		String add = request.getParameter("address");
+			String x = request.getParameter("X");
+			String y = request.getParameter("Y");
+			String w = request.getParameter("W");
+			String h = request.getParameter("H");
+			String manualterm = request.getParameter("term");
+			String term = request.getParameter("street");
+			String term2 = request.getParameter("town");
+			String term3 = request.getParameter("state");
+			String term4 = request.getParameter("country");
+			String term5 = request.getParameter("postcode");
+			String add = request.getParameter("address");
 
-		if (pdfurl == null)
-			pdfurl = "";
-		if (x == null)
-			x = "0";
-		if (y == null)
-			y = "0";
-		if (w == null)
-			w = "700";
-		if (h == null)
-			h = "800";
+			if (pdfurl == null)
+		pdfurl = "";
+			if (x == null)
+		x = "0";
+			if (y == null)
+		y = "0";
+			if (w == null)
+		w = "700";
+			if (h == null)
+		h = "800";
 
-		String captchaError = "";
-%>
+			String captchaError = "";
+	%>
 	<br />
 	<div id="searchbar" style="background: #FFFFBB; display: inline-block; padding: 10px;">
 
@@ -191,25 +191,23 @@
 	if (request.getParameter("btnSumbit") != null) {
 		if (captchaError.equals("")) {
 
-			Date startDate = new Date();
-			int xx = Integer.parseInt(x);
-			int yy = Integer.parseInt(y);
-			int ww = Integer.parseInt(w);
-			int hh = Integer.parseInt(h);
-			ArrayList<String> geoterms = new ArrayList<String>();
-			geoterms.add(term);
-			geoterms.add(term2);
-			geoterms.add(term3);
-			geoterms.add(term4);
-			geoterms.add(term5);
-			geoterms.add(manualterm);
-			geoterms.add(add);
-			String pdfText = geolocation.PDFTextExtractor.Exec(pdfurl, xx, yy, ww, hh, geoterms);
+	Date startDate = new Date();
+	int xx = Integer.parseInt(x);
+	int yy = Integer.parseInt(y);
+	int ww = Integer.parseInt(w);
+	int hh = Integer.parseInt(h);
+	ArrayList<String> geoterms = new ArrayList<String>();
+	geoterms.add(term);
+	geoterms.add(term2);
+	geoterms.add(term3);
+	geoterms.add(term4);
+	geoterms.add(term5);
+	geoterms.add(manualterm);
+	geoterms.add(add);
+	String pdfText = extractor.PDFTextExtractor.Exec(pdfurl, xx, yy, ww, hh, geoterms);
 
-			Date endDate = new Date();
-			double deltaSeconds = (endDate.getTime() - startDate.getTime()) / 1000.0;
-	
-	
+	Date endDate = new Date();
+	double deltaSeconds = (endDate.getTime() - startDate.getTime()) / 1000.0;
 %>
 
 	<br/>
