@@ -154,7 +154,7 @@ public class PDFTextExtractor {
 					
 					System.out.println(finalcontents.length());
 					System.out.println("Final Contents: " + finalcontents.toString());
-					if(finalcontents.length()==4){
+					if(finalcontents.length()==4 || finalcontents.length()==0){
 						
 						/*
 						 * We construct the text arraylist (which held all the pages) into one string as
