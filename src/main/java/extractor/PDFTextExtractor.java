@@ -151,9 +151,10 @@ public class PDFTextExtractor {
 					NorwegianRoadDataParser np = new NorwegianRoadDataParser(text, terms);
 					finalcontents = np.format();
 					
+					finalcontents = finalcontents+finalcontents.length();
 					
-					System.out.println(finalcontents.length());
-					System.out.println("Final Contents: " + finalcontents.toString());
+					
+				
 					if(finalcontents.length()==4 || finalcontents.length()==0){
 						
 						/*
@@ -194,9 +195,9 @@ public class PDFTextExtractor {
 					GenericParser gp = new GenericParser(text, terms);
 					finalcontents = gp.format();
 					
+					finalcontents = finalcontents+finalcontents.length();
 					
-					System.out.println(finalcontents.length());
-					System.out.println("Final Contents: " + finalcontents.toString());
+				
 					if(finalcontents.length()==4){
 						
 						StringBuilder builder = new StringBuilder();
