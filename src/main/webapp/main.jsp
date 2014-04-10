@@ -134,7 +134,6 @@
     <div id="map"></div>
     <p><b>Full Address</b>: <span id="address"></span></p>
     <p><span id="geocodeterms"></span></p>
-    <p><span id="town"></span></p>
     <p id="error"></p>
     <h2>PDF Parser</h2>
 	

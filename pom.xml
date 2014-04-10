@@ -14,6 +14,11 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    
+    NOTE: This file was copied from the Quick Start example provided on OpenShift.
+    A full copy of the base of the Quick Start is available here: https://github.com/jboss-developer/jboss-eap-quickstarts/tree/6.3.x-develop/helloworld
+    This file has only been modified to include the PDFBox dependency and the Geolocation Project name.
+    
 --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,8 +26,8 @@
     <artifactId>jboss-as-helloworld</artifactId>
     <version>7.1.2-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>JBoss EAP Quickstart: helloworld</name>
-    <description>JBoss EAP Quickstart: Helloworld</description>
+    <name>Geolocation Project</name>
+    <description>Geolocation Project</description>
 
     <url>http://jboss.org/jbossas</url>
     <licenses>
@@ -145,7 +150,7 @@
 <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
 <id>openshift</id>
 <build>
-   <finalName>jboss-as-helloworld</finalName>
+   <finalName>Geolocation Project</finalName>
    <plugins>
      <plugin>
        <artifactId>maven-war-plugin</artifactId>
