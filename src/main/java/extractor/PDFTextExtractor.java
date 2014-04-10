@@ -151,11 +151,11 @@ public class PDFTextExtractor {
 					NorwegianRoadDataParser np = new NorwegianRoadDataParser(text, terms);
 					finalcontents = np.format();
 					
-					
+					finalcontents = "finalcontents: " + finalcontents;
 					
 					
 				
-					if(finalcontents.length()==0){
+					if(finalcontents.isEmpty()){
 						
 						/*
 						 * We construct the text arraylist (which held all the pages) into one string as
@@ -172,7 +172,7 @@ public class PDFTextExtractor {
 						 * we want it to be displayed as a warning.
 						 * The final contents are then converted to a string.
 						 */
-						builder.insert(0, "<span style='background-color: yellow;'> WARNING: NO MATCHING TERMS FOUND. "+finalcontents.length() + "</span><br/>");
+						builder.insert(0, "<span style='background-color: yellow;'> WARNING: NO MATCHING TERMS FOUND. "+finalcontents + "</span><br/>");
 						finalcontents = builder.toString();
 					}
 				
@@ -195,7 +195,7 @@ public class PDFTextExtractor {
 					GenericParser gp = new GenericParser(text, terms);
 					finalcontents = gp.format();
 					
-					
+					finalcontents = "finalcontents: " + finalcontents;
 					
 				
 					if(finalcontents.length()==0){
