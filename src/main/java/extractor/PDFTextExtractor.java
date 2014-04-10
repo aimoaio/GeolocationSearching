@@ -151,11 +151,11 @@ public class PDFTextExtractor {
 					NorwegianRoadDataParser np = new NorwegianRoadDataParser(text, terms);
 					finalcontents = np.format();
 					
-					finalcontents = "finalcontents: " + finalcontents;
-					
-					
 				
-					if(finalcontents.isEmpty()){
+					
+					
+					//23 includes the <br><div id="tbl1"><br> tags that are added.
+					if(finalcontents.length()==23){
 						
 						/*
 						 * We construct the text arraylist (which held all the pages) into one string as
@@ -195,10 +195,10 @@ public class PDFTextExtractor {
 					GenericParser gp = new GenericParser(text, terms);
 					finalcontents = gp.format();
 					
-					finalcontents = "finalcontents: " + finalcontents;
-					
 				
-					if(finalcontents.length()==0){
+					
+					//23 includes the <br><div id="tbl1"><br> tags that are added.
+					if(finalcontents.length()==23){
 						
 						StringBuilder builder = new StringBuilder();
 						for (String textstuff :text){
