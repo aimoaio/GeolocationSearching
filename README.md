@@ -1,18 +1,14 @@
-helloworld: Helloworld Example
+Geolocation-based Searching of Legacy PDF Documents
 ===============================
-Author: Pete Muir
-Level: Beginner
-Technologies: CDI, Servlet
-Summary: Basic example that can be used to verify that the server is configured and running correctly
-Target Product: EAP
-Source: <https://github.com/jboss-jdf/jboss-as-quickstart/>
+Author: SeeMai Chan
+Technologies: Java, Javascript, HTML, CSS
+Summary: Searching of PDF documents based on geolocation
+Source: https://github.com/aimoaio/GeolocationSearching
 
-What is it?
+Abstract
 -----------
 
-This example demonstrates the use of *CDI 1.0* and *Servlet 3* in *JBoss Enterprise Application Platform 6* or *JBoss AS 7*.
-
-There is a tutorial for this quickstart in the [Getting Started Developing Applications Guide](http://www.jboss.org/jdf/quickstarts/jboss-as-quickstart/guide/HelloworldQuickstart).
+Much data online is available as PDF (Portable Document Format) files, including public transport and government data. PDF is a file format commonly found on the internet, it retains intended print layout, keeps all formatting and can be opened on almost any device. PDF files can be loaded on Smartphones for display but searching on these can be slow and difficult. In the case of transport and vehicle documents provided by the government, they also contain a lot of locational information. Under the assumption that most users who view these documents are looking for information regarding their current location, the project's aim is to develop an application that automates the PDF searching process based upon terms related to the user's location.
 
 System requirements
 -------------------
@@ -21,62 +17,45 @@ All you need to build this project is Java 6.0 (Java SDK 1.6) or better, Maven 3
 
 The application this project produces is designed to be run on JBoss Enterprise Application Platform 6 or JBoss AS 7. 
 
+For users, an internet connection is required to run. For developers, an internet connection is required for testing.
+
  
 Configure Maven
 ---------------
 
-If you have not yet done so, you must [Configure Maven](../README.md#configure-maven) before testing the quickstarts.
+If you have not yet done so, you must [Configure Maven](../README.md#configure-maven) before testing the application.
 
 
-Start JBoss Enterprise Application Platform 6 or JBoss AS 7 with the Web Profile
+Importing the application into Eclipse
 -------------------------
 
-1. Open a command line and navigate to the root of the JBoss server directory.
-2. The following shows the command line to start the server with the web profile:
+File --> Import --> Project from Git --> Clone URI
 
-        For Linux:   JBOSS_HOME/bin/standalone.sh
-        For Windows: JBOSS_HOME\bin\standalone.bat
+Enter: https://github.com/aimoaio/GeolocationSearching
 
- 
-Build and Deploy the Quickstart
+Deploying this application to OpenShift
+-------------------------
+2. Create an account on OpenShift: https://www.openshift.com/
+3. Create a namespace and an application name.
+4. Obtain the repository URL for the application (starts with ssh:)
+5. Push this repository to the OpenShift repository using Git.
+
+Dependency & Configuration for build
 -------------------------
 
-_NOTE: The following build command assumes you have configured your Maven user settings. If you have not, you must include Maven setting arguments on the command line. See [Build and Deploy the Quickstarts](../README.md#build-and-deploy-the-quickstarts) for complete instructions and additional options._
+The application depends on the PDFBox dependency, version 1.8.3. This can be found on: http://pdfbox.apache.org/
 
-1. Make sure you have started the JBoss Server as described above.
-2. Open a command line and navigate to the root directory of this quickstart.
-3. Type this command to build and deploy the archive:
+This dependency must be added to the pom.xml configuration file.
 
-        mvn clean package jboss-as:deploy
+Additionally the following line should be added to the pre_build scripts file inside action_hooks of the OpenShift folder
 
-4. This will deploy `target/jboss-as-helloworld.war` to the running instance of the server.
+Location of script file: git repo name/.openshift/action_hooks/pre_build
+
+mvn install:install-file -Dfile=../../app-root/repo/pdfbox-app-1.8.3.jar -DgroupId=org.apache.pdfbox -DartifactId=pdfbox -Dversion=1.8.3 -Dpackaging=jar
 
 
-Access the application 
+Accessing the demo application 
 ---------------------
 
-The application will be running at the following URL: <http://localhost:8080/jboss-as-helloworld>. 
+The application demo can be seen at: http://geo-geolocation.rhcloud.com/
 
-
-Undeploy the Archive
---------------------
-
-1. Make sure you have started the JBoss Server as described above.
-2. Open a command line and navigate to the root directory of this quickstart.
-3. When you are finished testing, type this command to undeploy the archive:
-
-        mvn jboss-as:undeploy
-
-
-Run the Quickstart in JBoss Developer Studio or Eclipse
--------------------------------------
-You can also start the server and deploy the quickstarts from Eclipse using JBoss tools. For more information, see [Use JBoss Developer Studio or Eclipse to Run the Quickstarts](../README.md#use-jboss-developer-studio-or-eclipse-to-run-the-quickstarts) 
-
-
-Debug the Application
-------------------------------------
-
-If you want to debug the source code or look at the Javadocs of any library in the project, run either of the following commands to pull them into your local repository. The IDE should then detect them.
-
-        mvn dependency:sources
-        mvn dependency:resolve -Dclassifier=javadoc
